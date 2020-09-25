@@ -34,8 +34,7 @@
     "earth"
   ],
   "dependencies": {
-    "@babel/register": "7.11.5",
-    "@types/ol": "6.4.1",
+    
     "lodash": "4.17.19",
     "ol": "6.4.3",
     "react-reconciler": "0.25.1"
@@ -44,6 +43,7 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
+    "@babel/register": "7.11.5",
     "@babel/core": "7.11.6",
     "@babel/node": "7.10.5",
     "@babel/preset-env": "7.10.4",
@@ -52,13 +52,15 @@
     "@hot-loader/react-dom": "16.13.0",
     "@rollup/plugin-commonjs": "14.0.0",
     "@rollup/plugin-node-resolve": "8.4.0",
-    "@storybook/addon-actions": "6.0.0-rc.14",
-    "@storybook/addon-links": "6.0.0-rc.14",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-essentials": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
     "@storybook/addons": "6.0.0-rc.14",
-    "@storybook/react": "6.0.0-rc.14",
-    "@types/openlayers": "4.6.17",
+    "@storybook/react": "^6.0.21",
     "@types/jest": "26.0.10",
+    "@types/ol": "6.4.1",
     "@types/lodash": "4.14.154",
+    "@types/openlayers": "4.6.17",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
     "@types/react-reconciler": "0.18.0",
@@ -66,9 +68,10 @@
     "builtin-modules": "3.1.0",
     "copy-webpack-plugin": "6.0.2",
     "jest": "26.4.2",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "react-hot-loader": "4.12.21",
+    "react-is": "^16.13.1",
     "rollup": "2.23.0",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
@@ -84,10 +87,11 @@
     "build:storybook": "build-storybook -s ./public",
     "build:types": "yarn run generate:mapping && tsc --emitDeclarationOnly",
     "build": "yarn build:lib && yarn build:types",
-    "storybook": "source ./.env; start-storybook -p 9009 -s ./public;",
+    "storybook": "start-storybook -p 6006",
     "generate:mapping": "echo 'Mapping generation has to be run manually because it needs some manual tweaking'",
     "generate:mapping:manual": "node -r ./babel-register ./src/utils/generate-types.ts",
-    "test": "jest"
+    "test": "jest",
+    "build-storybook": "build-storybook"
   },
   "browserslist": [
     ">0.2%",
