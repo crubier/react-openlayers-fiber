@@ -1,6 +1,6 @@
 import { upperFirst } from "lodash/fp";
 
-import { mapping } from "../generated-mapping";
+import { kindMapping, mapping } from "../generated-mapping";
 
 import { error004, error005 } from "../utils/errors";
 import { isFunction, isNil } from "lodash/fp";
@@ -16,7 +16,13 @@ export const createInstance = ((
   getChildHostContext,
   internalInstanceHandle
 ) => {
-  const { args = [], options = {}, constructFrom, attach,...otherProps } = props;
+  const {
+    args = [],
+    options = {},
+    constructFrom,
+    attach,
+    ...otherProps
+  } = props;
 
   const name = type;
   const target = mapping[name];
@@ -34,5 +40,5 @@ export const createInstance = ((
   }
 
   updateOlObject(olObject, {}, otherProps);
-  return { olObject, attach: attach };
+  return { kind: kindMapping[type], type, olObject, attach: attach };
 }) as Reconciler["createInstance"];

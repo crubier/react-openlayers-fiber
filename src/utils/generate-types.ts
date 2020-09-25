@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // To run this you need to comment
 //
-// in ol/layer.js:
+// in "ol/layer.js":
 // export { default as Heatmap } from './layer/Heatmap.js';
 // export { default as WebGLPoints } from './layer/WebGLPoints.js';
 //
-// in ol/source.js:
+// in "ol/source.js":
 // export { default as Raster } from './source/Raster.js';
 
 import {
@@ -65,6 +65,10 @@ export const convertMapping = (prefix: string) => (key: string): string => {
   return `  ${prefix}${upperFirst(camelCase(key))}: ${prefix}.${key},`;
 };
 
+export const convertKindMapping = (prefix: string) => (key: string): string => {
+  return `  ${prefix}${upperFirst(camelCase(key))}: "${prefix==="ol"?upperFirst(key):upperFirst(prefix)}",`;
+};
+
 export const convertMappingTypeOf = (prefix: string) => (
   key: string
 ): string => {
@@ -116,7 +120,22 @@ ${join(
     ...map(convertMapping("overlay"), filterCapitalized(keys(overlay))),
   ])
 )}
-  };
+};
+
+export const kindMapping = {
+${join(
+  "\n",
+  sortBy(identity, [
+    ...map(convertKindMapping("ol"), filterCapitalized(keys(ol))),
+    ...map(convertKindMapping("layer"), filterCapitalized(keys(layer))),
+    ...map(convertKindMapping("control"), filterCapitalized(keys(control))),
+    ...map(convertKindMapping("interaction"), filterCapitalized(keys(interaction))),
+    ...map(convertKindMapping("source"), filterCapitalized(keys(source))),
+    ...map(convertKindMapping("geom"), filterCapitalized(keys(geom))),
+    ...map(convertKindMapping("overlay"), filterCapitalized(keys(overlay))),
+  ])
+)}
+};
 
 export type MappingTypeofExport = {
 ${join(

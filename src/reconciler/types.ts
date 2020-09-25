@@ -1,6 +1,8 @@
 import { PropsWithChildren } from "react";
 import { HostConfig } from "react-reconciler";
-import OlObject from "ol/Object"
+import OlObjectTemp from "ol/Object";
+
+export type OlObject = OlObjectTemp;
 
 export type Detach = (container: OlObject, child: OlObject) => void;
 export type Attach =
@@ -22,6 +24,8 @@ export type Props = PropsWithChildren<{
 export type Container = OlObject;
 
 export type Instance = {
+  kind: string;
+  type: string;
   olObject: OlObject;
   attach?: Attach;
   detach: (container: Container, child: Container) => void;

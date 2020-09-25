@@ -56,7 +56,7 @@ const reconciler = ReactReconciler<
   shouldSetTextContent,
 
   appendChildToContainer() {},
-  // createTextInstance() {},
+  createTextInstance() {},
   prepareForCommit() {},
   removeChildFromContainer() {},
   replaceContainerChildren() {},

@@ -7,7 +7,7 @@ import { MapProvider, useMap } from "./context";
 import { ReactOlFiber } from "./types";
 
 const defaultArgs = [{}] as [ConstructorParameters<typeof OlMap>[0]];
-const defaultStyle = {};
+const defaultStyle = {width:630,height:480};
 const defaultOptions = {};
 
 // forward ref ?
@@ -26,12 +26,12 @@ export const Map = ({
   useLayoutEffect(() => {
     if (containerRef.current) {
       const wrapped = (
-        <map
+        <olMap
           options={{ ...options, target: containerRef.current }}
           {...mapProps}
         >
           <MapProvider value={map}>{children}</MapProvider>
-        </map>
+        </olMap>
       );
       const returned = render(wrapped, containerRef.current);
 
