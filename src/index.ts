@@ -1,12 +1,12 @@
-export { Viewer } from "./viewer";
+export { Map } from "./map";
 
 export {
-  usePostRender,
-  usePostUpdate,
-  usePreRender,
-  usePreUpdate,
+  // usePostRender,
+  // usePostUpdate,
+  // usePreRender,
+  // usePreUpdate,
 } from "./hooks";
 
-export { useViewer } from "./context";
+export { useMap } from "./context";
 
 export * from "./types";

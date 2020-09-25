@@ -1,5 +1,5 @@
 {
-  "include": ["./src/*"],
+  "include": ["./src/*","./node_modules/ol/*"],
   "compilerOptions": {
     "strict": false,
     "esModuleInterop": true,

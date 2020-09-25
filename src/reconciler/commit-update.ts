@@ -1,4 +1,4 @@
-import { updateCesiumObject } from "../utils/update-cesium-object";
+import { updateOlObject } from "../utils/update-ol-object";
 import { Reconciler } from "./types";
 
 export const commitUpdate = ((
@@ -12,12 +12,12 @@ export const commitUpdate = ((
     [key: string]: any;
   }>
 ) => {
-  const { cesiumObject } = instance;
+  const { olObject } = instance;
   const { children, args, onUpdate, ...props } = newProps;
 
-  updateCesiumObject(cesiumObject, oldProps, props);
+  updateOlObject(olObject, oldProps, props);
 
   if (typeof onUpdate === "function") {
-    onUpdate(cesiumObject);
+    onUpdate(olObject);
   }
 }) as Reconciler["commitUpdate"];

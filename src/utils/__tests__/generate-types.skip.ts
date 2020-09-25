@@ -27,12 +27,12 @@ describe("isFirstLetterCapitalized", () => {
 
 describe("convert single lines", () => {
   test("convertMappingExported", () => {
-    expect(convertMappingExported("test")).toEqual("  test: Cesium.test;");
+    expect(convertMappingExported("test")).toEqual("  test: ol.test;");
   });
 
   test("convertMappingTypeOf", () => {
     expect(convertMappingTypeOf("test")).toEqual(
-      '  test: typeof Cesium["test"];'
+      '  test: typeof ol["test"];'
     );
   });
 });
@@ -45,14 +45,14 @@ describe("convertAllValues", () => {
   test("simple", () => {
     expect(convertAllValues(["test"])).toEqual(`// @ts-nocheck
 // Generated Code, do not edit manually
-import * as Cesium from \"cesium\";
+import * as ol from \"ol\";
 
 export type MappingExported = {
-  test: Cesium.test;
+  test: ol.test;
 };
 
 export type MappingTypeofExport = {
-  test: typeof Cesium[\"test\"];
+  test: typeof ol[\"test\"];
 };`);
   });
 });

@@ -1,9 +1,11 @@
 import { upperFirst } from "lodash/fp";
-import * as Cesium from "cesium";
+
+import { mapping } from "../generated-mapping";
+
 import { error004, error005 } from "../utils/errors";
 import { isFunction, isNil } from "lodash/fp";
 
-import { updateCesiumObject } from "../utils/update-cesium-object";
+import { updateOlObject } from "../utils/update-ol-object";
 
 import { Reconciler } from "./types";
 
@@ -14,23 +16,23 @@ export const createInstance = ((
   getChildHostContext,
   internalInstanceHandle
 ) => {
-  const { args = [], constructFrom, attach } = props;
+  const { args = [], options = {}, constructFrom, attach,...otherProps } = props;
 
-  const name = upperFirst(type);
-  const target = Cesium[name];
+  const name = type;
+  const target = mapping[name];
 
-  let cesiumObject;
+  let olObject;
 
   if (isNil(target)) {
     throw error004(name);
   } else if (isNil(constructFrom)) {
-    cesiumObject = new target(...args);
+    olObject = new target(options, ...args);
   } else if (isFunction(target[constructFrom])) {
-    cesiumObject = target[constructFrom](...args);
+    olObject = target[constructFrom](...args);
   } else {
     throw error005(constructFrom, target);
   }
 
-  updateCesiumObject(cesiumObject, {}, props);
-  return { cesiumObject, attach: attach };
+  updateOlObject(olObject, {}, otherProps);
+  return { olObject, attach: attach };
 }) as Reconciler["createInstance"];

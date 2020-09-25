@@ -1,29 +1,28 @@
 import { PropsWithChildren } from "react";
 import { HostConfig } from "react-reconciler";
+import OlObject from "ol/Object"
 
-//FIXME: Maybe something more explicit
-export type CesiumObject = object;
-
-export type Detach = (container: CesiumObject, child: CesiumObject) => void;
+export type Detach = (container: OlObject, child: OlObject) => void;
 export type Attach =
   | string
-  | ((container: CesiumObject, child: CesiumObject) => Detach);
+  | ((container: OlObject, child: OlObject) => Detach);
 
 // Types for React-reconciler
 export type Type = string;
 
 export type Props = PropsWithChildren<{
   args?: any[];
+  options?: { [key: string]: any };
   attach?: Attach;
   onUpdate?: any;
   constructFrom: string;
   [key: string]: any;
 }>;
 
-export type Container = CesiumObject;
+export type Container = OlObject;
 
 export type Instance = {
-  cesiumObject: CesiumObject;
+  olObject: OlObject;
   attach?: Attach;
   detach: (container: Container, child: Container) => void;
 };
@@ -32,7 +31,7 @@ export type TextInstance = null;
 
 export type HydratableInstance = Instance;
 
-export type PublicInstance = Instance["cesiumObject"];
+export type PublicInstance = Instance["olObject"];
 
 export type HostContext = any;
 

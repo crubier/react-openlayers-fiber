@@ -1,9 +1,9 @@
 import React from "react";
-import * as Cesium from "cesium";
+import * as Ol from "ol";
 
 import { MappingExported, MappingTypeofExport } from "./generated-mapping";
 
-export declare namespace ReactCesiumFiber {
+export declare namespace ReactOlFiber {
   type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
     ? 1
     : 2) extends <T>() => T extends Y ? 1 : 2
@@ -28,15 +28,16 @@ export declare namespace ReactCesiumFiber {
 
   // set the values of type `property` to type any
   type TransformProperty<Object, Replacement = any> = {
-    [P in keyof Object]: Object[P] extends Cesium.Property
+    [P in keyof Object]: Object[P] extends Ol.Property
       ? Replacement
       : Object[P];
   };
 
   type Overwrite<T, O> = Omit<T, NonFunctionKeys<O>> & O;
 
-  type NodeProps<ConstructorOptions = any> = {
+  type NodeProps<ConstructorOptions = any, ObjectOptions = any> = {
     args?: ConstructorOptions;
+    options?: ObjectOptions;
     constructFrom?: string;
     attach?:
       | string
@@ -60,7 +61,7 @@ export declare namespace ReactCesiumFiber {
   >;
 
   type IntrinsicElements = {
-    [T in keyof MappingExported]: ReactCesiumFiber.Component<
+    [T in keyof MappingExported]: ReactOlFiber.Component<
       MappingExported[T],
       ConstructorParameters<MappingTypeofExport[T]>
     >;
@@ -69,7 +70,7 @@ export declare namespace ReactCesiumFiber {
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends ReactCesiumFiber.IntrinsicElements {}
+    interface IntrinsicElements extends ReactOlFiber.IntrinsicElements {}
   }
 }
 
@@ -77,17 +78,17 @@ declare global {
 // However, it does not work as typescript doesn't provide a way
 // to change the case of a key.
 // The problem is that we can have all the JSX intrinsic elements types
-// Directly from the one exported in Cesium but in CapitalizedCamelCase ...
+// Directly from the one exported in Ol but in CapitalizedCamelCase ...
 
 // type UpperCamelCaseType = {
-//   [T in UpperCamelCaseKeys]: ReactCesiumFiber.Component<
-//     typeof Cesium[T],
-//     ConstructorParameters<typeof Cesium[T]>
+//   [T in UpperCamelCaseKeys]: ReactOlFiber.Component<
+//     typeof Ol[T],
+//     ConstructorParameters<typeof Ol[T]>
 //   >;
 // };
 
 // type UpperCamelCaseKeys = {
-//   [T in keyof typeof Cesium]: typeof Cesium[T] extends new (...args: any) => any
+//   [T in keyof typeof Ol]: typeof Ol[T] extends new (...args: any) => any
 //     ? T
 //     : never;
-// }[keyof typeof Cesium];
+// }[keyof typeof Ol];

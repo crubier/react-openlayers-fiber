@@ -1,8 +1,8 @@
 {
-  "name": "react-cesium-fiber",
+  "name": "react-openlayers-fiber",
   "version": "0.2.0",
   "license": "MIT",
-  "description": "React-fiber renderer for cesium",
+  "description": "React-fiber renderer for openlayers",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -10,39 +10,42 @@
     "lib/*"
   ],
   "author": {
-    "name": "Hugo Raynal",
-    "email": "raynalhugo@gmail.com"
+    "name": "Vincent Lecrubier",
+    "email": "vincent.lecrubier@sterblue.com"
   },
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RaynalHugo/react-cesium-fiber.git"
+    "url": "git+https://github.com/crubier/react-openlayers-fiber.git"
   },
-  "homepage": "https://github.com/RaynalHugo/react-cesium-fiber#readme",
+  "homepage": "https://github.com/crubier/react-openlayers-fiber#readme",
   "bugs": {
-    "url": "https://github.com/RaynalHugo/react-cesium-fiber/issues"
+    "url": "https://github.com/crubier/react-openlayers-fiber/issues"
   },
   "keywords": [
     "react",
     "renderer",
     "fiber",
-    "cesium",
-    "cesiumjs",
+    "openlayers",
+    "openlayersjs",
     "map",
     "3D",
     "globe",
     "earth"
   ],
   "dependencies": {
+    "@babel/register": "7.11.5",
+    "@types/ol": "6.4.1",
     "lodash": "4.17.19",
+    "ol": "6.4.3",
     "react-reconciler": "0.25.1"
   },
   "peerDependencies": {
-    "cesium": "^1.63.0",
     "react": "^16.8.0"
   },
   "devDependencies": {
-    "@babel/core": "7.10.5",
+    "@babel/core": "7.11.6",
+    "@babel/node": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.4",
     "@babel/preset-typescript": "7.10.4",
@@ -53,7 +56,7 @@
     "@storybook/addon-links": "6.0.0-rc.14",
     "@storybook/addons": "6.0.0-rc.14",
     "@storybook/react": "6.0.0-rc.14",
-    "@types/cesium": "1.67.10",
+    "@types/openlayers": "4.6.17",
     "@types/jest": "26.0.10",
     "@types/lodash": "4.14.154",
     "@types/react": "16.9.35",
@@ -61,7 +64,6 @@
     "@types/react-reconciler": "0.18.0",
     "babel-loader": "8.1.0",
     "builtin-modules": "3.1.0",
-    "cesium": "1.70.0",
     "copy-webpack-plugin": "6.0.2",
     "jest": "26.4.2",
     "react": "16.13.0",
@@ -83,7 +85,8 @@
     "build:types": "yarn run generate:mapping && tsc --emitDeclarationOnly",
     "build": "yarn build:lib && yarn build:types",
     "storybook": "source ./.env; start-storybook -p 9009 -s ./public;",
-    "generate:mapping": "ts-node ./src/utils/generate-types.ts",
+    "generate:mapping": "echo 'Mapping generation has to be run manually because it needs some manual tweaking'",
+    "generate:mapping:manual": "node -r ./babel-register ./src/utils/generate-types.ts",
     "test": "jest"
   },
   "browserslist": [

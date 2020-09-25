@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
-export const ViewerContext = createContext(null);
+export const MapContext = createContext(null);
 
-export const useViewer = () => useContext(ViewerContext);
+export const useMap = () => useContext(MapContext);
 
-export const ViewerProvider = ViewerContext.Provider;
+export const MapProvider = MapContext.Provider;
