@@ -6,6 +6,7 @@ import * as control from "ol/control";
 import * as interaction from "ol/interaction";
 import * as source from "ol/source";
 import * as geom from "ol/geom";
+import * as style from "ol/style";
 
 export type Mapping = {
   olCollection: typeof ol.Collection;
@@ -91,6 +92,15 @@ export type Mapping = {
   olSourceWmts: typeof source.WMTS;
   olSourceXyz: typeof source.XYZ;
   olSourceZoomify: typeof source.Zoomify;
+  olStyleCircle: typeof style.Circle;
+  olStyleFill: typeof style.Fill;
+  olStyleIcon: typeof style.Icon;
+  olStyleIconImage: typeof style.IconImage;
+  olStyleImage: typeof style.Image;
+  olStyleRegularShape: typeof style.RegularShape;
+  olStyleStroke: typeof style.Stroke;
+  olStyleStyle: typeof style.Style;
+  olStyleText: typeof style.Text;
   olView: typeof ol.View;
 };
 
@@ -178,6 +188,15 @@ export const mapping:Mapping = {
   olSourceWmts: source.WMTS,
   olSourceXyz: source.XYZ,
   olSourceZoomify: source.Zoomify,
+  olStyleCircle: style.Circle,
+  olStyleFill: style.Fill,
+  olStyleIcon: style.Icon,
+  olStyleIconImage: style.IconImage,
+  olStyleImage: style.Image,
+  olStyleRegularShape: style.RegularShape,
+  olStyleStroke: style.Stroke,
+  olStyleStyle: style.Style,
+  olStyleText: style.Text,
   olView: ol.View,
 };
 
@@ -265,5 +284,14 @@ export const kindMapping = {
   olSourceWmts: "Source",
   olSourceXyz: "Source",
   olSourceZoomify: "Source",
+  olStyleCircle: "Style",
+  olStyleFill: "Style",
+  olStyleIcon: "Style",
+  olStyleIconImage: "Style",
+  olStyleImage: "Style",
+  olStyleRegularShape: "Style",
+  olStyleStroke: "Style",
+  olStyleStyle: "Style",
+  olStyleText: "Style",
   olView: "View",
 };

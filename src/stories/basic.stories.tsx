@@ -12,16 +12,11 @@ export default {
   component: Map,
 };
 
-const Template: Story<{}> = (args) => (
-  <Map>
-    <olView options={{ center: [0, 0], zoom: 2 }}/>
+export const Primary: Story<{}> = (args) => (
+  <Map style={{ width: "100%", height: "640px" }}>
+    <olView center={[0, 0]} zoom={2} />
     <olLayerTile>
-      <olSourceOsm/>
+      <olSourceOsm />
     </olLayerTile>
   </Map>
 );
-
-export const Primary = Template.bind({});
-Primary.args = {
-  label: "Button",
-};

@@ -18,21 +18,20 @@ export const createInstance = ((
 ) => {
   const {
     args = [],
-    options = {},
     constructFrom,
     attach,
+    children,
     ...otherProps
   } = props;
 
-  const name = type;
-  const target = mapping[name];
+  const target = mapping[type];
 
   let olObject;
 
   if (isNil(target)) {
-    throw error004(name);
+    throw error004(type);
   } else if (isNil(constructFrom)) {
-    olObject = new target(options, ...args);
+    olObject = new target({ ...otherProps }, ...args);
   } else if (isFunction(target[constructFrom])) {
     olObject = target[constructFrom](...args);
   } else {

@@ -41,9 +41,8 @@ import * as sourceTemp from "ol/source";
 const source = { ...sourceTemp, Raster: {} };
 // geom: all good
 import * as geom from "ol/geom";
-// // overlay: Special case because there is only one type, so it does not have the same shape a others
-// import Overlay from "ol/Overlay";
-// const overlay = { Overlay };
+// style: all good
+import * as style from "ol/style";
 ///////////////////////////////////////////////////////////////////////////////
 
 import { writeFileSync } from "fs";
@@ -78,6 +77,7 @@ import * as control from "ol/control";
 import * as interaction from "ol/interaction";
 import * as source from "ol/source";
 import * as geom from "ol/geom";
+import * as style from "ol/style";
 
 export type Mapping = {
 ${join(
@@ -91,7 +91,8 @@ ${join(
       filterCapitalized(keys(interaction))
     ),
     ...map(convertTypeMapping("olSource","source"), filterCapitalized(keys(source))),
-    ...map(convertTypeMapping("olGeom","geom"), filterCapitalized(keys(geom)))
+    ...map(convertTypeMapping("olGeom","geom"), filterCapitalized(keys(geom))),
+    ...map(convertTypeMapping("olStyle","style"), filterCapitalized(keys(style)))
   ])
 )}
 };
@@ -105,7 +106,8 @@ ${join(
     ...map(convertMapping("olControl","control"), filterCapitalized(keys(control))),
     ...map(convertMapping("olInteraction","interaction"), filterCapitalized(keys(interaction))),
     ...map(convertMapping("olSource","source"), filterCapitalized(keys(source))),
-    ...map(convertMapping("olGeom","geom"), filterCapitalized(keys(geom)))
+    ...map(convertMapping("olGeom","geom"), filterCapitalized(keys(geom))),
+    ...map(convertMapping("olStyle","style"), filterCapitalized(keys(style)))
   ])
 )}
 };
@@ -120,6 +122,7 @@ ${join(
     ...map(convertKindMapping("olInteraction","interaction"), filterCapitalized(keys(interaction))),
     ...map(convertKindMapping("olSource","source"), filterCapitalized(keys(source))),
     ...map(convertKindMapping("olGeom","geom"), filterCapitalized(keys(geom))),
+    ...map(convertKindMapping("olStyle","style"), filterCapitalized(keys(style)))
   ])
 )}
 };
