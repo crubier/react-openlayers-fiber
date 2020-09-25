@@ -23,7 +23,7 @@ With `react-openlayers-fiber`, you can profit from all the features React and it
 
 ### 1. Create your react app and add basic openlayers configuration.
 
-You can follow <a href="https://github.com/darwin-education/craco-openlayers">craco-openlayers</a> really nice tutorial. But note that you don't need to add `resium`.
+Use create-react-app for example.
 
 ### 2. Add react-openlayers-fiber with your favorite provider.
 
@@ -50,26 +50,20 @@ export const App = () => <Viewer />;
 
 ```jsx
 import React from "react";
-import { Color } from "openlayers";
-import { Viewer } from "react-openlayers-fiber";
+import { Map } from "react-openlayers-fiber";
 
 export const App = () => (
-  <Viewer>
-    <entity>
-      <cartesian3
-        attach="position"
-        constructFrom="fromDegrees"
-        args={[-114.0, 30.0, 300000.0]}
-      />
-      <boxGraphics attach="box" material={Color.RED}>
-        <cartesian3 attach="dimensions" args={[400000.0, 300000.0, 500000.0]} />
-      </boxGraphics>
-    </entity>
-  </Viewer>
+  <Map>
+    <olView options={{ center: [0, 0], zoom: 2 }}></olView>
+    <layerTile>
+      <sourceOsm>
+      </sourceOsm>
+    </layerTile>
+  </Map>
 );
 ```
 
-Note that you don't need to import `entity`, `cartesian3` or `boxGraphics`. That's the magic of the react-reconciler.
+Note that you don't need to import `olView`, `layerTile` or `sourceOsm`. That's the magic of the react-reconciler.
 
 ## Core concepts
 
