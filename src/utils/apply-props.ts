@@ -1,4 +1,4 @@
-import { includes } from "lodash/fp";
+import { startsWith } from "lodash/fp";
 import OlObject from "ol/Object";
 
 /**
@@ -20,19 +20,21 @@ export const hasSetter = (key: string, object: object): boolean =>
  * but it only sets it if it changed from the previous props.
  *
  * @param olObject The ol object to update
- * @param props The props potentially containing new changes
+ * @param newProps The newProps potentially containing new changes
  */
-export const updateOlObject = (
+export const applyProps = (
   olObject: OlObject,
   oldProps: object = {},
-  props: object
+  newProps: object
 ): void => {
   const olObjectKeys = olObject.getKeys();
-  Object.entries(props)
-    .filter(([key]) => includes(key, olObjectKeys))
+  Object.entries(newProps)
+    // .filter(([key]) => includes(key, olObjectKeys))
     .forEach(([key, value]) => {
-      if (oldProps[key] !== value) {
-        olObject.set(key, value);
+      if (oldProps[key] !== newProps[key]) {
+        // For special cases (for example ol objects that have an option called "key"), we can add a "_" before.
+        const olKey = startsWith("_", key) ? key.substring(1) : key;
+        olObject.set(olKey, value);
       }
     });
 };

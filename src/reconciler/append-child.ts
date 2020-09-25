@@ -17,10 +17,10 @@ import { error001, error002 } from "../utils/errors";
 // };
 
 export const appendChild = ((containerNode, childNode) => {
-  console.log("containerNode");
-  console.log(containerNode);
-  console.log("childNode");
-  console.log(childNode);
+  // console.log("containerNode");
+  // console.log(containerNode);
+  // console.log("childNode");
+  // console.log(childNode);
   const {
     olObject: containerOlObject,
     kind: containerKind,

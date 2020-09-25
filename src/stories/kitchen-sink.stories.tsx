@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { Fill, RegularShape, Stroke, Style } from "ol/style";
-
+import { useResource, useUpdate } from "../hooks";
 import { Map } from "../map";
 
 // import "../types";
@@ -14,6 +14,7 @@ export default {
 };
 
 const bingstyles = [
+  "Road",
   "RoadOnDemand",
   "Aerial",
   "AerialWithLabelsOnDemand",
@@ -36,7 +37,7 @@ const pointStyle = new Style({
 
 const polygonStyle = new Style({
   stroke: new Stroke({
-    color: "blue",
+    color: "red",
     width: 3,
   }),
   fill: new Fill({
@@ -46,20 +47,27 @@ const polygonStyle = new Style({
 
 export const Primary: Story<{}> = (args) => {
   const [currentStyle, setCurrentStyle] = useState(bingstyles[0]);
-  const toto = useRef();
-  useLayoutEffect(() => {
-    console.log(toto);
-  }, []);
-  console.log("toto.current");
-  console.log(toto.current);
+  const vectorSourceRef = useResource();
+  const drawRef = useUpdate((drawInteraction) => {
+    // There are better ways to do this! This is just to demonstrate
+    // the use of useUpdate
+    if(currentStyle==bingstyles[0]){
+      drawInteraction.setActive(false);
+    } else {
+      drawInteraction.setActive(true);
+    }
+  },[currentStyle]);
+
   return (
     <>
       <select
         value={currentStyle}
         onChange={(e) => setCurrentStyle(e.target.value)}
       >
-        {bingstyles.map((style) => (
-          <option value={style}>{style}</option>
+        {bingstyles.map((style, index) => (
+          <option key={index} value={style}>
+            {style}
+          </option>
         ))}
       </select>
       <Map style={{ width: "100%", height: "640px" }}>
@@ -69,21 +77,22 @@ export const Primary: Story<{}> = (args) => {
         <olControlScaleLine />
         <olInteractionDragRotateAndZoom />
 
-        {/* <olLayerTile>
-          <olSourceOsm />
-        </olLayerTile> */}
-
-        {bingstyles.map((style) => (
-          <olLayerTile visible={style == currentStyle} preload={Infinity}>
+        {bingstyles.map((style, index) => (
+          <olLayerTile
+            key={index}
+            visible={style == currentStyle}
+            preload={Infinity}
+          >
             <olSourceBingMaps
-              key="AjsxIZS8gG8w-Gck9bKjBdP-7InQI8-UFHPUife_H0bScTfivLu9csMHNE_B0lGP"
+              _key="Akdsy2SFch0llm3vlRegzoCtdZEmgD--98xBIXj83gtJyicWSd9vIeH1Qibj_V3U"
               imagerySet={style}
+              hidpi={true}
             />
           </olLayerTile>
         ))}
 
         <olLayerVector>
-          <olSourceVector features={[]} ref={toto}>
+          <olSourceVector features={[]} ref={vectorSourceRef}>
             <olFeature style={pointStyle}>
               <olGeomPoint args={[[0, 0]]} />
             </olFeature>
@@ -91,18 +100,25 @@ export const Primary: Story<{}> = (args) => {
               <olGeomPolygon
                 args={[
                   [
-                    [0, 0],
-                    [1, 0],
-                    [0, 1],
-                    [0, 0],
+                    [
+                      [0, 0],
+                      [1000000, 0],
+                      [0, 1000000],
+                      [0, 0],
+                    ],
                   ],
                 ]}
               />
             </olFeature>
           </olSourceVector>
         </olLayerVector>
-
-        <olInteractionDraw type="Polygon" source={toto.current} />
+        {vectorSourceRef.current && (
+          <olInteractionDraw
+            type="Polygon"
+            source={vectorSourceRef.current}
+            ref={drawRef}
+          />
+        )}
       </Map>
     </>
   );

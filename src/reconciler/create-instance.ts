@@ -3,9 +3,9 @@ import { upperFirst } from "lodash/fp";
 import { kindMapping, mapping } from "../generated-mapping";
 
 import { error004, error005 } from "../utils/errors";
-import { isFunction, isNil } from "lodash/fp";
+import { isFunction, isNil, isArray, mapKeys, startsWith } from "lodash/fp";
 
-import { updateOlObject } from "../utils/update-ol-object";
+import { applyProps } from "../utils/apply-props";
 
 import { Reconciler } from "./types";
 
@@ -17,7 +17,7 @@ export const createInstance = ((
   internalInstanceHandle
 ) => {
   const {
-    args = [],
+    args,
     constructFrom,
     attach,
     children,
@@ -31,13 +31,24 @@ export const createInstance = ((
   if (isNil(target)) {
     throw error004(type);
   } else if (isNil(constructFrom)) {
-    olObject = new target({ ...otherProps }, ...args);
+    if (isNil(args)) {
+      olObject = new target(
+        mapKeys(
+          (key) => (startsWith("_", key) ? key.substring(1) : key),
+          otherProps
+        )
+      );
+    } else if (isArray(args)) {
+      olObject = new target(...args);
+    } else {
+      new target(args);
+    }
   } else if (isFunction(target[constructFrom])) {
     olObject = target[constructFrom](...args);
   } else {
     throw error005(constructFrom, target);
   }
 
-  updateOlObject(olObject, {}, otherProps);
+  applyProps(olObject, {}, otherProps);
   return { kind: kindMapping[type], type, olObject, attach: attach };
 }) as Reconciler["createInstance"];

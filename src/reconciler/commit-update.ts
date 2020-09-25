@@ -1,4 +1,4 @@
-import { updateOlObject } from "../utils/update-ol-object";
+import { applyProps } from "../utils/apply-props";
 import { Reconciler } from "./types";
 
 export const commitUpdate = ((
@@ -15,7 +15,7 @@ export const commitUpdate = ((
   const { olObject } = instance;
   const { children, args, onUpdate, ...props } = newProps;
 
-  updateOlObject(olObject, oldProps, props);
+  applyProps(olObject, oldProps, props);
 
   if (typeof onUpdate === "function") {
     onUpdate(olObject);

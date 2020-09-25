@@ -1,7 +1,7 @@
 import {
   hasSetter,
-  updateOlObject,
-} from "../update-ol-object";
+  applyProps,
+} from "../apply-props";
 
 describe("hasSetter", () => {
   test("type", () => {
