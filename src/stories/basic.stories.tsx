@@ -14,11 +14,10 @@ export default {
 
 const Template: Story<{}> = (args) => (
   <Map>
-    <olView options={{ center: [0, 0], zoom: 2 }}></olView>
-    <layerTile>
-      <sourceOsm>
-      </sourceOsm>
-    </layerTile>
+    <olView options={{ center: [0, 0], zoom: 2 }}/>
+    <olLayerTile>
+      <olSourceOsm/>
+    </olLayerTile>
   </Map>
 );
 
