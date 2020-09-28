@@ -78,27 +78,27 @@ export type CatalogueItem<T> = {
   object: T;
 };
 // Now we generate the types automatically (This parts needs typescript 4.1+)
-type CatalogueOl = {
-  [K in keyof typeof ol as `ol${Capitalize<K>}`]: CatalogueItem<typeof ol[K]>
-}
-type CatalogueOlLayer = {
-  [K in keyof typeof olLayer as `olLayer${Capitalize<K>}`]: CatalogueItem<typeof olLayer[K]>
-}
-type CatalogueOlControl = {
-  [K in keyof typeof olControl as `olControl${Capitalize<K>}`]: CatalogueItem<typeof olControl[K]>
-}
-type CatalogueOlInteraction = {
-  [K in keyof typeof olInteraction as `olInteraction${Capitalize<K>}`]: CatalogueItem<typeof olInteraction[K]>
-}
-type CatalogueOlSource = {
-  [K in keyof typeof olSource as `olSource${Capitalize<K>}`]: CatalogueItem<typeof olSource[K]>
-}
-type CatalogueOlGeom = {
-  [K in keyof typeof olGeom as `olGeom${Capitalize<K>}`]: CatalogueItem<typeof olGeom[K]>
-}
-type CatalogueOlStyle = {
-  [K in keyof typeof olStyle as `olStyle${Capitalize<K>}`]: CatalogueItem<typeof olStyle[K]>
-}
+// type CatalogueOl = {
+//   [K in keyof typeof ol as `ol${Capitalize<K>}`]: CatalogueItem<typeof ol[K]>
+// }
+// type CatalogueOlLayer = {
+//   [K in keyof typeof olLayer as `olLayer${Capitalize<K>}`]: CatalogueItem<typeof olLayer[K]>
+// }
+// type CatalogueOlControl = {
+//   [K in keyof typeof olControl as `olControl${Capitalize<K>}`]: CatalogueItem<typeof olControl[K]>
+// }
+// type CatalogueOlInteraction = {
+//   [K in keyof typeof olInteraction as `olInteraction${Capitalize<K>}`]: CatalogueItem<typeof olInteraction[K]>
+// }
+// type CatalogueOlSource = {
+//   [K in keyof typeof olSource as `olSource${Capitalize<K>}`]: CatalogueItem<typeof olSource[K]>
+// }
+// type CatalogueOlGeom = {
+//   [K in keyof typeof olGeom as `olGeom${Capitalize<K>}`]: CatalogueItem<typeof olGeom[K]>
+// }
+// type CatalogueOlStyle = {
+//   [K in keyof typeof olStyle as `olStyle${Capitalize<K>}`]: CatalogueItem<typeof olStyle[K]>
+// }
 
 // Finished, now some additional stuff
 export type Catalogue = CatalogueOl &

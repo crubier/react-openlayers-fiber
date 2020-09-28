@@ -1,6 +1,5 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { ReactOlFiber } from "../types";
 
 import { Map } from "../map";
 import { Catalogue } from "../catalogue";
@@ -26,4 +25,3 @@ export const Primary: Story<{}> = (args) => (
 );
 
 // const t =()=><olControlZoom onChange_maxResolution={(e)=>{return false}} ></olControlZoom>;
-

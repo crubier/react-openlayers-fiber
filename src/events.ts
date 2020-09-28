@@ -1,4 +1,7 @@
 // List of possible listeners generated in a dirty way
+// Generated using 
+// grep "on(type: '" -R ./node_modules/@types/ol 
+// and then doing some CMD-D magic in VSCode...
 // Had to do this because of https://github.com/microsoft/TypeScript/issues/40816
 import { ListenerFunction } from "ol/events";
 

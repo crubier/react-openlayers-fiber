@@ -36,7 +36,7 @@ export declare namespace ReactOlFiber {
   }[keyof T];
 
   /**
-   * Get keys whose fields are ol object catalog elements class with a single option arg in contructor
+   * Get keys whose fields are ol object catalog elements class with a single option arg in constructor
    */
   type OlObjectCatalogElementKeys<T> = {
     [K in keyof T]: T[K] extends {
@@ -81,8 +81,7 @@ export declare namespace ReactOlFiber {
         children?: React.ReactNode;
         ref?: React.Ref<React.ReactNode>;
         key?: React.Key;
-      } & // Event listeners (generated manually dirtily for now)
-      Events;
+      } & Events; // Event listeners (generated manually dirtily for now)
   };
 
   /**
@@ -92,7 +91,8 @@ export declare namespace ReactOlFiber {
     [T in keyof OmitOlObjectCatalogElements<Catalogue>]: Partial<
       // Fields of the class that are not functions (Most of the time there isn't any)
       OmitFunctions<PickWritables<Catalogue[T]["object"]>>
-    > & { // Usual props for all elements
+    > & {
+      // Usual props for all elements
       attach?:
         | string
         | (<Container = any, Child = any>(
@@ -103,10 +103,13 @@ export declare namespace ReactOlFiber {
       children?: React.ReactNode;
       ref?: React.Ref<React.ReactNode>;
       key?: React.Key;
+      //This should be the keys of static methods of Catalogue[T]["object"]
+      constructFrom?: keyof Catalogue[T]["object"];
       // Fields of the options argument of the constructor (First argument)
-      args: ConstructorParameters<Catalogue[T]["object"]>;
-    } & // Events listener (generated manually dirtily for now)
-      Events;
+      args:
+        | ConstructorParameters<Catalogue[T]["object"]>
+        | ConstructorParameters<Catalogue[T]["object"]>[0];
+    } & Events; // Events listener (generated manually dirtily for now)
   };
 
   /**
@@ -115,14 +118,16 @@ export declare namespace ReactOlFiber {
   type IntrinsicElementsAdHoc = {
     // Primitive
     primitive: { object: any } & { [properties: string]: any };
+    new: { object: any; args: any[] } & { [properties: string]: any };
   };
+
+  type IntrinsicElements = ReactOlFiber.IntrinsicElementsAdHoc &
+    ReactOlFiber.IntrinsicElementsSimpleObject &
+    ReactOlFiber.IntrinsicElementsArgsObject;
 }
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements
-      extends ReactOlFiber.IntrinsicElementsAdHoc,
-        ReactOlFiber.IntrinsicElementsSimpleObject,
-        ReactOlFiber.IntrinsicElementsArgsObject {}
+    interface IntrinsicElements extends ReactOlFiber.IntrinsicElements {}
   }
 }
