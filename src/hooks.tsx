@@ -6,11 +6,8 @@ import {
   useLayoutEffect,
 } from "react";
 
-import { useMap as useMapBase } from "./context";
+export { useMap } from "./context";
 
-export function useMap() {
-  return useMapBase();
-}
 
 export function useResource<T>(
   optionalRef?: React.MutableRefObject<T>

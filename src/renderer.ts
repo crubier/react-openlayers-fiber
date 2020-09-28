@@ -35,8 +35,6 @@ import SourceVector from "ol/source/Vector";
 import SourceCluster from "ol/source/Cluster";
 import Geometry from "ol/geom/Geometry";
 
-
-
 export interface ObjectHash {
   [name: string]: OlObject
 }
@@ -125,9 +123,8 @@ export const createInstance = (
     const { object, args } = props;
     instance = new object(...args);
   } else {
+    // <olMap/> and all other similar elements from ol
     const { args, constructFrom, attach, children, ...otherProps } = props;
-
-    let name = upperFirst(type);
 
     const target = catalogue[type as CatalogueKey];
 
@@ -137,7 +134,7 @@ export const createInstance = (
       new Error(`React-Openlayers-Fiber Error: ${type} is not exported by ol.`);
     } else if (isNil(constructFrom)) {
       if (isNil(args)) {
-        olObject = new target(
+        olObject = new (target.object)(
           mapKeys(
             (key) => (startsWith("_", key) ? key.substring(1) : key),
             otherProps

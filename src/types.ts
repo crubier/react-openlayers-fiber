@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Mapping,MappingType } from "./generated";
+import { Catalogue } from "./catalogue";
 
 export declare namespace ReactOlFiber {
   type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
@@ -9,6 +9,9 @@ export declare namespace ReactOlFiber {
     ? A
     : B;
 
+  /**
+   * Get keys whose fields are writable in a class (not readonly)
+   */
   type WritableKeys<T> = {
     [P in keyof T]-?: IfEquals<
       { [Q in P]: T[P] },
@@ -17,75 +20,117 @@ export declare namespace ReactOlFiber {
     >;
   }[keyof T];
 
-  type Writable<Type> = Pick<Type, WritableKeys<Type>>;
-
-  type NonFunctionKeys<T> = {
-    [K in keyof T]: T[K] extends Function ? never : K;
+  /**
+   * Get keys whose fields are functions in a class
+   */
+  type FunctionKeys<T> = {
+    [K in keyof T]: T[K] extends Function ? K : never;
   }[keyof T];
 
-  type WithoutFunctionKeys<T> = Pick<T, NonFunctionKeys<T>>;
+  /**
+   * Get keys whose fields are classes in a class
+   */
+  type ClassKeys<T> = {
+    [K in keyof T]: T[K] extends new (...args: any) => any ? K : never;
+  }[keyof T];
 
-  // // set the values of type `property` to type any
-  // type TransformProperty<Object, Replacement = any> = {
-  //   [P in keyof Object]: Object[P] extends Ol.Property
-  //     ? Replacement
-  //     : Object[P];
+  /**
+   * Get keys whose fields are ol object catalog elements class with a single option arg in contructor
+   */
+  type OlObjectCatalogElementKeys<T> = {
+    [K in keyof T]: T[K] extends {
+      object: new (arg: any, arg2: void) => any /*new <U>(arg?: U) => any*/;
+    }
+      ? K
+      : never;
+  }[keyof T];
+
+  type PickWritables<T> = Pick<T, WritableKeys<T>>;
+  type OmitWritables<T> = Omit<T, WritableKeys<T>>;
+
+  type PickFunctions<T> = Pick<T, FunctionKeys<T>>;
+  type OmitFunctions<T> = Omit<T, FunctionKeys<T>>;
+
+  type PickClasses<T> = Pick<T, ClassKeys<T>>;
+  type OmitClasses<T> = Omit<T, ClassKeys<T>>;
+
+  type PickOlObjectCatalogElements<T> = Pick<T, OlObjectCatalogElementKeys<T>>;
+  type OmitOlObjectCatalogElements<T> = Omit<T, OlObjectCatalogElementKeys<T>>;
+
+  // /**
+  //  * Generic elements based on ol base object
+  //  */
+  // type ObjectElements = {
+  //   [T in keyof ]: ComponentWithProperties<
+  //     Catalogue[T]["object"],
+  //     ConstructorParameters<Catalogue[T]["object"]>
+  //   >;
   // };
 
-  type Overwrite<T, O> = Omit<T, NonFunctionKeys<O>> & O;
+  type ObjectProps<T> = {};
 
-  type NodeProps<ConstructorOptions = any, ObjectOptions = any> = {
-    args?: ConstructorOptions;
-    options?: ObjectOptions;
-    constructFrom?: string;
-    attach?:
-      | string
-      | (<Container = any, Child = any>(
-          container: Container,
-          child: Child
-        ) => (container: Container, child: Child) => void);
-    onUpdate?: (...args: any[]) => void;
-    children?: React.ReactNode;
-    ref?: React.Ref<React.ReactNode>;
-    key?: React.Key;
+  /**
+   * Generic elements based on simple ol objects (most usual case)
+   */
+  type IntrinsicElementsSimpleObject = {
+    [T in keyof PickOlObjectCatalogElements<Catalogue>]: Partial<
+      // Fields of the class that are not functions (Most of the time there isn't any)
+      OmitFunctions<PickWritables<Catalogue[T]["object"]>>
+    > &
+      // Fields of the options argument of the constructor (First argument)
+      ConstructorParameters<Catalogue[T]["object"]>[0] & {
+        // Usual props for all elements
+        attach?:
+          | string
+          | (<Container = any, Child = any>(
+              container: Container,
+              child: Child
+            ) => (container: Container, child: Child) => void);
+        onUpdate?: (...args: any[]) => void;
+        children?: React.ReactNode;
+        ref?: React.Ref<React.ReactNode>;
+        key?: React.Key;
+      };
   };
 
-  type ComponentWithProperties<Type, ConstructorOptions> = NodeProps<
-    ConstructorOptions
-  > &
-    Partial<WithoutFunctionKeys<Writable<Type>>>;
+  /**
+   * Generic elements based on more complex constructors
+   */
+  type IntrinsicElementsArgsObject = {
+    [T in keyof OmitOlObjectCatalogElements<Catalogue>]: Partial<
+      // Fields of the class that are not functions (Most of the time there isn't any)
+      OmitFunctions<PickWritables<Catalogue[T]["object"]>>
+    > & // Usual props for all elements
+    {
+      attach?:
+        | string
+        | (<Container = any, Child = any>(
+            container: Container,
+            child: Child
+          ) => (container: Container, child: Child) => void);
+      onUpdate?: (...args: any[]) => void;
+      children?: React.ReactNode;
+      ref?: React.Ref<React.ReactNode>;
+      key?: React.Key;
+      // Fields of the options argument of the constructor (First argument)
+      args: ConstructorParameters<Catalogue[T]["object"]>;
+    };
+  };
 
-  type Component<Type, ConstructorOptions> = ComponentWithProperties<Type, ConstructorOptions>;
-
-  type IntrinsicElements = {
-    [T in keyof Mapping]: ReactOlFiber.Component<
-      Mapping[T],
-      ConstructorParameters<MappingType[T]>
-    >;
+  /**
+   * Specific ad-hoc elements
+   */
+  type IntrinsicElementsAdHoc = {
+    // Primitive
+    primitive: { object: any } & { [properties: string]: any };
   };
 }
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends ReactOlFiber.IntrinsicElements {}
+    interface IntrinsicElements
+      extends ReactOlFiber.IntrinsicElementsAdHoc,
+        ReactOlFiber.IntrinsicElementsSimpleObject,
+        ReactOlFiber.IntrinsicElementsArgsObject {}
   }
 }
-
-// A way more elegant solution that avoid generating a mapping
-// However, it does not work as typescript doesn't provide a way
-// to change the case of a key.
-// The problem is that we can have all the JSX intrinsic elements types
-// Directly from the one exported in Ol but in CapitalizedCamelCase ...
-
-// type UpperCamelCaseType = {
-//   [T in UpperCamelCaseKeys]: ReactOlFiber.Component<
-//     typeof Ol[T],
-//     ConstructorParameters<typeof Ol[T]>
-//   >;
-// };
-
-// type UpperCamelCaseKeys = {
-//   [T in keyof typeof Ol]: typeof Ol[T] extends new (...args: any) => any
-//     ? T
-//     : never;
-// }[keyof typeof Ol];
