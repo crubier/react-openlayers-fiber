@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Catalogue } from "./catalogue";
+import { Events } from "./events";
 
 export declare namespace ReactOlFiber {
   type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
@@ -57,16 +58,6 @@ export declare namespace ReactOlFiber {
   type PickOlObjectCatalogElements<T> = Pick<T, OlObjectCatalogElementKeys<T>>;
   type OmitOlObjectCatalogElements<T> = Omit<T, OlObjectCatalogElementKeys<T>>;
 
-  // /**
-  //  * Generic elements based on ol base object
-  //  */
-  // type ObjectElements = {
-  //   [T in keyof ]: ComponentWithProperties<
-  //     Catalogue[T]["object"],
-  //     ConstructorParameters<Catalogue[T]["object"]>
-  //   >;
-  // };
-
   type ObjectProps<T> = {};
 
   /**
@@ -90,7 +81,8 @@ export declare namespace ReactOlFiber {
         children?: React.ReactNode;
         ref?: React.Ref<React.ReactNode>;
         key?: React.Key;
-      };
+      } & // Event listeners (generated manually dirtily for now)
+      Events;
   };
 
   /**
@@ -100,8 +92,7 @@ export declare namespace ReactOlFiber {
     [T in keyof OmitOlObjectCatalogElements<Catalogue>]: Partial<
       // Fields of the class that are not functions (Most of the time there isn't any)
       OmitFunctions<PickWritables<Catalogue[T]["object"]>>
-    > & // Usual props for all elements
-    {
+    > & { // Usual props for all elements
       attach?:
         | string
         | (<Container = any, Child = any>(
@@ -114,7 +105,8 @@ export declare namespace ReactOlFiber {
       key?: React.Key;
       // Fields of the options argument of the constructor (First argument)
       args: ConstructorParameters<Catalogue[T]["object"]>;
-    };
+    } & // Events listener (generated manually dirtily for now)
+      Events;
   };
 
   /**
