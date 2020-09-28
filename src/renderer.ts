@@ -6,7 +6,7 @@ import {
   unstable_runWithPriority as run,
 } from "scheduler";
 
-import { kindMapping, mapping } from "./generated";
+import {  catalogue, CatalogueKey } from "./catalogue";
 
 import {
   isFunction,
@@ -35,15 +35,58 @@ import SourceVector from "ol/source/Vector";
 import SourceCluster from "ol/source/Cluster";
 import Geometry from "ol/geom/Geometry";
 
-import {
-  ObjectHash,
-  Detach,
-  Attach,
+
+
+export interface ObjectHash {
+  [name: string]: OlObject
+}
+
+export type Detach = (container: OlObject, child: OlObject) => void;
+export type Attach =
+  | string
+  | ((
+      container: OlObject,
+      child: OlObject,
+      parentInstance: Instance,
+      childInstance: Instance,
+    ) => Detach);
+
+export type Type = string;
+
+export type Props = PropsWithChildren<{
+  args?: any[];
+  options?: { [key: string]: any };
+  attach?: Attach;
+  onUpdate?: any;
+  constructFrom: string;
+  [key: string]: any;
+}>;
+
+export type Container = OlObject;
+
+export type Instance = {
+  kind: string;
+  type: string;
+  olObject: OlObject;
+  attach?: Attach;
+  detach?: (container: Container, child: Container) => void;
+};
+
+export type OpaqueHandle = Fiber;
+export type TextInstance = null;
+export type HydratableInstance = Instance;
+export type PublicInstance = OlObject;
+export type HostContext = {};
+export type UpdatePayload = boolean;
+export type ChildSet = void;
+export type TimeoutHandle = TimerHandler;
+export type NoTimeout = -1;
+
+export type Reconciler = HostConfig<
   Type,
   Props,
   Container,
   Instance,
-  OpaqueHandle,
   TextInstance,
   HydratableInstance,
   PublicInstance,
@@ -51,9 +94,9 @@ import {
   UpdatePayload,
   ChildSet,
   TimeoutHandle,
-  NoTimeout,
-  Reconciler,
-} from "./renderer-types";
+  NoTimeout
+>;
+
 
 const instances = new Map();
 const emptyObject = {};
@@ -63,10 +106,6 @@ const error002 = (containerType, childType) =>
   new Error(
     `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props.`
   );
-
-
-let catalogue: ObjectHash = {}
-export const extend = (objects: object): void => void (catalogue = { ...catalogue, ...objects })
 
 export const createInstance = (
   type: Type,
@@ -90,9 +129,7 @@ export const createInstance = (
 
     let name = upperFirst(type);
 
-    const target = mapping[type];
-
-    const target = (catalogue as any)[name] || (mapping as any)[name]
+    const target = catalogue[type as CatalogueKey];
 
     let olObject;
 
@@ -118,7 +155,7 @@ export const createInstance = (
         `React-Openlayers-Fiber Error: ${constructFrom} is not a constructor for ${target}`
       );
     }
-    const kind = kindMapping[type];
+    const kind = catalogue[type as CatalogueKey].kind;
 
     applyProps(olObject, {}, otherProps);
 
