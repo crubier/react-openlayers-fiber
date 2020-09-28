@@ -57,8 +57,13 @@ const filterCapitalized = filter(isFirstLetterCapitalized);
 export const convertTypeMapping = (prefix: string,object: string) => (
   key: string
 ): string => {
-  return `  ${prefix}${upperFirst(camelCase(key))}: typeof ${object}.${key};`;
+  return `  ${prefix}${upperFirst(camelCase(key))}: ${object}.${key};`;
 };
+
+export const convertTypeofMapping = (prefix: string,object: string) => (key: string): string => {
+  return `  ${prefix}${upperFirst(camelCase(key))}: typeof ${object}["${key}"];`;
+};
+
 
 export const convertMapping = (prefix: string,object: string) => (key: string): string => {
   return `  ${prefix}${upperFirst(camelCase(key))}: ${object}.${key},`;
@@ -97,6 +102,21 @@ ${join(
 )}
 };
 
+export type MappingType = {
+${join(
+  "\n",
+  sortBy(identity, [
+    ...map(convertTypeofMapping("ol","ol"), filterCapitalized(keys(ol))),
+    ...map(convertTypeofMapping("olLayer","layer"), filterCapitalized(keys(layer))),
+    ...map(convertTypeofMapping("olControl","control"), filterCapitalized(keys(control))),
+    ...map(convertTypeofMapping("olInteraction","interaction"), filterCapitalized(keys(interaction))),
+    ...map(convertTypeofMapping("olSource","source"), filterCapitalized(keys(source))),
+    ...map(convertTypeofMapping("olGeom","geom"), filterCapitalized(keys(geom))),
+    ...map(convertTypeofMapping("olStyle","style"), filterCapitalized(keys(style)))
+  ])
+)}
+};
+
 export const mapping:Mapping = {
 ${join(
   "\n",
@@ -126,6 +146,8 @@ ${join(
   ])
 )}
 };
+
+
 `;
 };
 
@@ -140,10 +162,10 @@ ${join(
  * react-openlayers-fiber releases with ol ones.
  */
 export const generateTypes = () =>
-  writeFileSync("./src/generated-mapping.ts", convertAllValues());
+  writeFileSync("./src/generated.ts", convertAllValues());
 
 /* istanbul ignore next */
 if (require.main === module) {
   generateTypes();
-  console.log("mapping types generated!");
+  console.log("types generated!");
 }

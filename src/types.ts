@@ -1,7 +1,6 @@
 import React from "react";
-import * as Ol from "ol";
 
-import { MappingExported, MappingTypeofExport } from "./generated-mapping";
+import { Mapping,MappingType } from "./generated";
 
 export declare namespace ReactOlFiber {
   type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
@@ -26,12 +25,12 @@ export declare namespace ReactOlFiber {
 
   type WithoutFunctionKeys<T> = Pick<T, NonFunctionKeys<T>>;
 
-  // set the values of type `property` to type any
-  type TransformProperty<Object, Replacement = any> = {
-    [P in keyof Object]: Object[P] extends Ol.Property
-      ? Replacement
-      : Object[P];
-  };
+  // // set the values of type `property` to type any
+  // type TransformProperty<Object, Replacement = any> = {
+  //   [P in keyof Object]: Object[P] extends Ol.Property
+  //     ? Replacement
+  //     : Object[P];
+  // };
 
   type Overwrite<T, O> = Omit<T, NonFunctionKeys<O>> & O;
 
@@ -56,14 +55,12 @@ export declare namespace ReactOlFiber {
   > &
     Partial<WithoutFunctionKeys<Writable<Type>>>;
 
-  type Component<Type, ConstructorOptions> = TransformProperty<
-    ComponentWithProperties<Type, ConstructorOptions>
-  >;
+  type Component<Type, ConstructorOptions> = ComponentWithProperties<Type, ConstructorOptions>;
 
   type IntrinsicElements = {
-    [T in keyof MappingExported]: ReactOlFiber.Component<
-      MappingExported[T],
-      ConstructorParameters<MappingTypeofExport[T]>
+    [T in keyof Mapping]: ReactOlFiber.Component<
+      Mapping[T],
+      ConstructorParameters<MappingType[T]>
     >;
   };
 }

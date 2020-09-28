@@ -1,15 +1,22 @@
 import { PropsWithChildren } from "react";
-import { HostConfig } from "react-reconciler";
-import OlObjectTemp from "ol/Object";
+import { Fiber, HostConfig } from "react-reconciler";
 
-export type OlObject = OlObjectTemp;
+import { Object as OlObject } from "ol";
+
+export interface ObjectHash {
+  [name: string]: OlObject
+}
 
 export type Detach = (container: OlObject, child: OlObject) => void;
 export type Attach =
   | string
-  | ((container: OlObject, child: OlObject) => Detach);
+  | ((
+      container: OlObject,
+      child: OlObject,
+      parentInstance: Instance,
+      childInstance: Instance,
+    ) => Detach);
 
-// Types for React-reconciler
 export type Type = string;
 
 export type Props = PropsWithChildren<{
@@ -28,22 +35,17 @@ export type Instance = {
   type: string;
   olObject: OlObject;
   attach?: Attach;
-  detach: (container: Container, child: Container) => void;
+  detach?: (container: Container, child: Container) => void;
 };
 
+export type OpaqueHandle = Fiber;
 export type TextInstance = null;
-
 export type HydratableInstance = Instance;
-
-export type PublicInstance = Instance["olObject"];
-
-export type HostContext = any;
-
+export type PublicInstance = OlObject;
+export type HostContext = {};
 export type UpdatePayload = boolean;
-
-//FIXME: No idea what this is
-export type ChildSet = unknown;
-export type TimeoutHandle = unknown;
+export type ChildSet = void;
+export type TimeoutHandle = TimerHandler;
 export type NoTimeout = -1;
 
 export type Reconciler = HostConfig<

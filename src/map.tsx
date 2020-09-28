@@ -1,8 +1,8 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { Map as OlMap } from "ol";
-import { render } from "./reconciler";
+import { render } from "./renderer";
 
-import { MapProvider, useMap } from "./context";
+import { MapProvider } from "./context";
 
 import { ReactOlFiber } from "./types";
 
@@ -38,5 +38,3 @@ export const Map = ({
 
   return <div style={style} ref={containerRef}></div>;
 };
-
-export { useMap };
