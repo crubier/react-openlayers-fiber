@@ -3,3 +3,4 @@ node_modules
 lib
 storybook-static
 coverage
+build-storybook.log

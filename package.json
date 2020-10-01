@@ -89,7 +89,7 @@
     "storybook": "start-storybook -p 6006",
     "test": "jest",
     "build-storybook": "build-storybook",
-    "build-chromatic": "yarn chromatic --project-token 2oikxtrwb9i"
+    "chromatic": "yarn exec chromatic -- --project-token 2oikxtrwb9i"
   },
   "browserslist": [
     ">0.2%",
