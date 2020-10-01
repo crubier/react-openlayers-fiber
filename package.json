@@ -36,7 +36,7 @@
   "dependencies": {
     "lodash": "4.17.19",
     "ol": "6.4.3",
-    "react-reconciler": "0.25.1"
+    "react-reconciler": ""
   },
   "peerDependencies": {
     "react": "^16.8.0"
@@ -62,7 +62,6 @@
     "@types/openlayers": "4.6.17",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
-    "@types/react-reconciler": "0.18.0",
     "babel-loader": "8.1.0",
     "builtin-modules": "3.1.0",
     "copy-webpack-plugin": "6.0.2",

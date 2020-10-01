@@ -1,5 +1,6 @@
-import React, { PropsWithChildren } from "react";
-import ReactReconciler, { Fiber, HostConfig } from "react-reconciler";
+import React from "react";
+// import ReactReconciler, { Fiber, HostConfig } from "react-reconciler";
+import ReactReconciler from "react-reconciler";
 import {
   unstable_now as now,
   unstable_IdlePriority as idlePriority,
@@ -67,7 +68,8 @@ export type Instance = {
   detach?: (container: Container, child: Container) => void;
 };
 
-export type OpaqueHandle = Fiber;
+// export type OpaqueHandle = Fiber;
+export type OpaqueHandle = any;
 export type TextInstance = null;
 export type HydratableInstance = Instance;
 export type PublicInstance = OlObject;
@@ -77,20 +79,20 @@ export type ChildSet = void;
 export type TimeoutHandle = TimerHandler;
 export type NoTimeout = -1;
 
-export type Reconciler = HostConfig<
-  Type,
-  Props,
-  Container,
-  Instance,
-  TextInstance,
-  HydratableInstance,
-  PublicInstance,
-  HostContext,
-  UpdatePayload,
-  ChildSet,
-  TimeoutHandle,
-  NoTimeout
->;
+// export type Reconciler = HostConfig<
+//   Type,
+//   Props,
+//   Container,
+//   Instance,
+//   TextInstance,
+//   HydratableInstance,
+//   PublicInstance,
+//   HostContext,
+//   UpdatePayload,
+//   ChildSet,
+//   TimeoutHandle,
+//   NoTimeout
+// >;
 
 const instances = new Map();
 const emptyObject = {};
@@ -321,7 +323,7 @@ export const applyProps = (
     });
 };
 
-export const removeChild = ((
+export const removeChild = (
   { olObject: container },
   { olObject: child, attach, detach }
 ) => {
@@ -334,9 +336,9 @@ export const removeChild = ((
       `React-Openlayers-Fiber Error: Couldn't remove this child from this container. You can specify how to detach this type of child ("${child.constructor.name}") from this type of container ("${container.constructor.name}") using the "attach" props.`
     );
   }
-}) as Reconciler["removeChild"];
+}
 
-export const commitUpdate = ((
+export const commitUpdate = (
   instance,
   updatePayload,
   type,
@@ -355,7 +357,7 @@ export const commitUpdate = ((
   if (typeof onUpdate === "function") {
     onUpdate(olObject);
   }
-}) as Reconciler["commitUpdate"];
+}
 
 export const defaultAttach = (
   parent: PublicInstance,
@@ -573,46 +575,149 @@ const unhideTextInstance = () => {
   );
 };
 
-const reconciler = ReactReconciler<
-  Type,
-  Props,
-  Container,
-  Instance,
-  TextInstance,
-  HydratableInstance,
-  PublicInstance,
-  HostContext,
-  UpdatePayload,
-  ChildSet,
-  TimeoutHandle,
-  NoTimeout
->({
+const reconciler = ReactReconciler({
+
+
+  // List from node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
+
+
+
   getPublicInstance,
   getRootHostContext,
   getChildHostContext,
-
   prepareForCommit,
   resetAfterCommit,
-
   createInstance,
   appendInitialChild,
   finalizeInitialChildren,
-
   prepareUpdate,
-
   shouldSetTextContent,
   shouldDeprioritizeSubtree,
-
   createTextInstance,
 
-  scheduleDeferredCallback,
-  cancelDeferredCallback,
+  scheduleTimeout: isFunction(setTimeout) ? setTimeout : undefined,
+  cancelTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
+  // setTimeout: isFunction(setTimeout) ? setTimeout : undefined,
+  // clearTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
+  noTimeout: -1,
 
-  setTimeout,
-  clearTimeout,
-  noTimeout,
 
+  // scheduleTimeout,
+  // cancelTimeout,
+  // noTimeout,
   now,
+  isPrimaryRenderer,
+  warnsIfNotActing,
+  supportsMutation,
+  supportsPersistence,
+  supportsHydration,
+  DEPRECATED_mountResponderInstance,
+  DEPRECATED_unmountResponderInstance,
+  getFundamentalComponentInstance,
+  mountFundamentalComponent,
+  shouldUpdateFundamentalComponent,
+  getInstanceFromNode,
+  beforeRemoveInstance,
+  //      Mutation
+  //     (optional)
+  // -------------------
+
+  appendChild,
+  appendChildToContainer,
+  commitTextUpdate,
+  commitMount,
+  commitUpdate,
+  insertBefore,
+  insertInContainerBefore,
+  removeChild,
+  removeChildFromContainer,
+  resetTextContent,
+  hideInstance,
+  hideTextInstance,
+  unhideInstance,
+  unhideTextInstance,
+  updateFundamentalComponent,
+  unmountFundamentalComponent,
+  // //     Persistence
+  // //     (optional)
+  // // -------------------
+
+  // cloneInstance,
+  // createContainerChildSet,
+  // appendChildToContainerChildSet,
+  // finalizeContainerChildren,
+  // replaceContainerChildren,
+  // cloneHiddenInstance,
+  // cloneHiddenTextInstance,
+  // cloneFundamentalInstance,
+  // //     Hydration
+  // //     (optional)
+  // // -------------------
+
+  // canHydrateInstance,
+  // canHydrateTextInstance,
+  // canHydrateSuspenseInstance,
+  // isSuspenseInstancePending,
+  // isSuspenseInstanceFallback,
+  // registerSuspenseInstanceRetry,
+  // getNextHydratableSibling,
+  // getFirstHydratableChild,
+  // hydrateInstance,
+  // hydrateTextInstance,
+  // hydrateSuspenseInstance,
+  // getNextHydratableInstanceAfterSuspenseInstance,
+  // commitHydratedContainer,
+  // commitHydratedSuspenseInstance,
+  // clearSuspenseBoundary,
+  // clearSuspenseBoundaryFromContainer,
+  // didNotMatchHydratedContainerTextInstance,
+  // didNotMatchHydratedTextInstance,
+  // didNotHydrateContainerInstance,
+  // didNotHydrateInstance,
+  // didNotFindHydratableContainerInstance,
+  // didNotFindHydratableContainerTextInstance,
+  // didNotFindHydratableContainerSuspenseInstance,
+  // didNotFindHydratableInstance,
+  // didNotFindHydratableTextInstance,
+  // didNotFindHydratableSuspenseInstance,
+
+
+
+
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+
+  // List from node_modules/@types/react-reconciler/index.d.ts
+
+  // getPublicInstance,
+  // getRootHostContext,
+  // getChildHostContext,
+
+  // prepareForCommit,
+  // resetAfterCommit,
+
+  // createInstance,
+  // appendInitialChild,
+  // finalizeInitialChildren,
+
+  // prepareUpdate,
+
+  // shouldSetTextContent,
+  // shouldDeprioritizeSubtree,
+
+  // createTextInstance,
+
+  // scheduleDeferredCallback,
+  // cancelDeferredCallback,
+
+  // setTimeout,
+  // clearTimeout,
+  // noTimeout,
+
+  // now,
 
   // // Temporary workaround for scenario where multiple renderers concurrently
   // // render using the same context objects. E.g. React DOM and React ART on the
