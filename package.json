@@ -36,7 +36,7 @@
   "dependencies": {
     "lodash": "4.17.19",
     "ol": "6.4.3",
-    "react-reconciler": ""
+    "react-reconciler": "0.25.1"
   },
   "peerDependencies": {
     "react": "^16.8.0"
@@ -64,6 +64,7 @@
     "@types/react-dom": "16.9.8",
     "babel-loader": "8.1.0",
     "builtin-modules": "3.1.0",
+    "chromatic": "5.2.0",
     "copy-webpack-plugin": "6.0.2",
     "jest": "26.4.2",
     "react": "16.13.1",
@@ -86,10 +87,9 @@
     "build:types": "yarn run generate && tsc --emitDeclarationOnly",
     "build": "yarn build:lib && yarn build:types",
     "storybook": "start-storybook -p 6006",
-    "generate": "echo 'Mapping generation has to be run manually because it needs some manual tweaking'",
-    "generate:manual": "node -r ./babel-register ./src/generate-code.ts",
     "test": "jest",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build-chromatic": "yarn chromatic --project-token 2oikxtrwb9i"
   },
   "browserslist": [
     ">0.2%",

@@ -578,7 +578,7 @@ const unhideTextInstance = () => {
 const reconciler = ReactReconciler({
 
 
-  // List from node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
+  // List from ./node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
 
 
 
@@ -606,11 +606,11 @@ const reconciler = ReactReconciler({
   // cancelTimeout,
   // noTimeout,
   now,
-  isPrimaryRenderer,
-  warnsIfNotActing,
-  supportsMutation,
-  supportsPersistence,
-  supportsHydration,
+  isPrimaryRenderer:false,
+  warnsIfNotActing:true,
+  supportsMutation:false,
+  supportsPersistence:false,
+  supportsHydration:false,
   DEPRECATED_mountResponderInstance,
   DEPRECATED_unmountResponderInstance,
   getFundamentalComponentInstance,
@@ -622,22 +622,22 @@ const reconciler = ReactReconciler({
   //     (optional)
   // -------------------
 
-  appendChild,
-  appendChildToContainer,
-  commitTextUpdate,
-  commitMount,
-  commitUpdate,
-  insertBefore,
-  insertInContainerBefore,
-  removeChild,
-  removeChildFromContainer,
-  resetTextContent,
-  hideInstance,
-  hideTextInstance,
-  unhideInstance,
-  unhideTextInstance,
-  updateFundamentalComponent,
-  unmountFundamentalComponent,
+  // appendChild,
+  // appendChildToContainer,
+  // commitTextUpdate,
+  // commitMount,
+  // commitUpdate,
+  // insertBefore,
+  // insertInContainerBefore,
+  // removeChild,
+  // removeChildFromContainer,
+  // resetTextContent,
+  // hideInstance,
+  // hideTextInstance,
+  // unhideInstance,
+  // unhideTextInstance,
+  // updateFundamentalComponent,
+  // unmountFundamentalComponent,
   // //     Persistence
   // //     (optional)
   // // -------------------
@@ -722,18 +722,18 @@ const reconciler = ReactReconciler({
   // // Temporary workaround for scenario where multiple renderers concurrently
   // // render using the same context objects. E.g. React DOM and React ART on the
   // // same page. DOM is the primary renderer; ART is the secondary renderer.
-  isPrimaryRenderer: false,
+  // isPrimaryRenderer: false,
 
-  supportsMutation: true,
-  supportsPersistence: false,
-  supportsHydration: false,
+  // supportsMutation: true,
+  // supportsPersistence: false,
+  // supportsHydration: false,
 
   // // -------------------
   // //      Mutation
   // //     (optional)
   // // -------------------
-  appendChild,
-  appendChildToContainer,
+  // appendChild,
+  // appendChildToContainer,
   // commitTextUpdate?(textInstance: TextInstance, oldText: string, newText: string): void;
   // commitMount?(
   //     instance: Instance,
