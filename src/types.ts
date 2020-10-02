@@ -81,7 +81,10 @@ export declare namespace ReactOlFiber {
         children?: React.ReactNode;
         ref?: React.Ref<React.ReactNode>;
         key?: React.Key;
-      } & Events; // Event listeners (generated manually dirtily for now)
+        args?:
+          | ConstructorParameters<Catalogue[T]["object"]>
+          | ConstructorParameters<Catalogue[T]["object"]>[0];
+      } & Events & { [key: string]: any }; // Event listeners (generated manually dirtily for now) // Other props that can be set using a specific setter but that dont exist in the object (see geom.point.coordinates for example)
   };
 
   /**
@@ -106,10 +109,10 @@ export declare namespace ReactOlFiber {
       //This should be the keys of static methods of Catalogue[T]["object"]
       constructFrom?: keyof Catalogue[T]["object"];
       // Fields of the options argument of the constructor (First argument)
-      args:
+      args?:
         | ConstructorParameters<Catalogue[T]["object"]>
         | ConstructorParameters<Catalogue[T]["object"]>[0];
-    } & Events; // Events listener (generated manually dirtily for now)
+    } & Events & { [key: string]: any }; // Events listener (generated manually dirtily for now) // Other props that can be set using a specific setter but that dont exist in the object (see geom.point.coordinates for example)
   };
 
   /**

@@ -6,7 +6,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 
 
 export default {
-  title: "Empty"
+  title: "Examples/0-Empty"
 };
 
 export const Primary: Story<{}> = (args) => (

@@ -21,7 +21,13 @@ import {
   upperFirst,
   size,
   keys,
+  map,
+  forEach,
+  toPairs,
 } from "lodash/fp";
+
+
+const forEachUncapped = forEach.convert({cap:false});
 
 // Imports from the imperative lib
 
@@ -103,19 +109,18 @@ const error002 = (containerType, childType) =>
     `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props.`
   );
 
-export const getPublicInstance = (
+const getPublicInstance = (
   instance: Instance | TextInstance
 ): PublicInstance => {
   return instance.olObject;
 };
 
 // Not used as of today, feel free to implement something cool instead of this
-export const getRootHostContext = (
-  rootContainerInstance: Container
-): HostContext => emptyObject;
+const getRootHostContext = (rootContainerInstance: Container): HostContext =>
+  emptyObject;
 
 // Not used as of today, feel free to implement something cool instead of this
-export const getChildHostContext = (
+const getChildHostContext = (
   parentHostContext: HostContext,
   type: Type,
   rootContainerInstance: Container
@@ -125,11 +130,11 @@ export const getChildHostContext = (
     : type;
 };
 
-export const prepareForCommit = (containerInfo: Container): void => {};
+const prepareForCommit = (containerInfo: Container): void => {};
 
-export const resetAfterCommit = (containerInfo: Container): void => {};
+const resetAfterCommit = (containerInfo: Container): void => {};
 
-export const createInstance = (
+const createInstance = (
   type: Type,
   props: Props,
   rootContainerInstance: Container,
@@ -212,14 +217,14 @@ export const createInstance = (
   }
 };
 
-export const appendInitialChild = (
+const appendInitialChild = (
   parentInstance: Instance,
   child: Instance | TextInstance
 ): void => {
   return appendChild(parentInstance, child);
 };
 
-export const finalizeInitialChildren = (
+const finalizeInitialChildren = (
   parentInstance: Instance,
   type: Type,
   props: Props,
@@ -229,7 +234,7 @@ export const finalizeInitialChildren = (
   return false;
 };
 
-export const prepareUpdate = (
+const prepareUpdate = (
   instance: Instance,
   type: Type,
   oldProps: Props,
@@ -253,18 +258,15 @@ export const prepareUpdate = (
   }
 };
 
-export const shouldSetTextContent = (type: Type, props: Props): boolean => {
+const shouldSetTextContent = (type: Type, props: Props): boolean => {
   return false;
 };
 
-export const shouldDeprioritizeSubtree = (
-  type: Type,
-  props: Props
-): boolean => {
+const shouldDeprioritizeSubtree = (type: Type, props: Props): boolean => {
   return false;
 };
 
-export const createTextInstance = (
+const createTextInstance = (
   text: string,
   rootContainerInstance: Container,
   hostContext: HostContext,
@@ -273,28 +275,28 @@ export const createTextInstance = (
   return null;
 };
 
-export const scheduleDeferredCallback = (
+const scheduleDeferredCallback = (
   callback: () => any,
   options?: { timeout: number }
 ): any => {
   //TODO
 };
 
-export const cancelDeferredCallback = (callbackID: any): void => {
+const cancelDeferredCallback = (callbackID: any): void => {
   //TODO
 };
 
-export const setTimeout = (
+const setTimeout = (
   handler: (...args: any[]) => void,
   timeout: number
 ): TimeoutHandle | NoTimeout => {
   //TODO
   return -1;
 };
-export const clearTimeout = (handle: TimeoutHandle | NoTimeout): void => {
+const clearTimeout = (handle: TimeoutHandle | NoTimeout): void => {
   //TODO
 };
-export const noTimeout: NoTimeout = -1;
+const noTimeout: NoTimeout = -1;
 
 /**
  *
@@ -306,27 +308,77 @@ export const noTimeout: NoTimeout = -1;
  * @param olObject The ol object to update
  * @param newProps The newProps potentially containing new changes
  */
-export const applyProps = (
+const applyProps = (
   olObject: OlObject,
   oldProps: object = {},
   newProps: object
 ): void => {
-  const olObjectKeys = olObject.getKeys();
-  Object.entries(newProps)
-    // .filter(([key]) => includes(key, olObjectKeys))
-    .forEach(([key, value]) => {
-      if (oldProps[key] !== newProps[key]) {
-        // For special cases (for example ol objects that have an option called "key"), we can add a "_" before.
-        const olKey = startsWith("_", key) ? key.substring(1) : key;
-        olObject.set(olKey, value);
+  const setterGeneric = olObject.set;
+  forEach((key) => {
+    if (oldProps[key] !== newProps[key]) {
+      // For special cases (for example ol objects that have an option called "key"), we can add a "_" before.
+      const olKey = startsWith("_", key) ? key.substring(1) : key;
+      const keySetter = `set${upperFirst(olKey)}`
+      const setterSpecificKey = olObject[keySetter];
+      if (isFunction(setterSpecificKey)) {
+        setterSpecificKey.bind(olObject)(newProps[key]);
+      } else if (isFunction(setterGeneric)) {
+        setterGeneric.bind(olObject)(olKey, newProps[key]);
+      } else {
+        console.warn(
+          `React-Openlayers-Fiber Warning: Setting the property ${olKey} brutally because there is no setter on the object`
+        );
+        console.warn(olObject);
+        olObject[olKey] = newProps[key];
       }
-    });
+    }
+  }, keys(newProps));
 };
 
-export const removeChild = (
-  { olObject: container },
-  { olObject: child, attach, detach }
-) => {
+const commitTextUpdate = (
+  textInstance: TextInstance,
+  oldText: string,
+  newText: string
+): void => {};
+const commitMount = (
+  instance: Instance,
+  type: Type,
+  newProps: Props,
+  internalInstanceHandle: OpaqueHandle
+): void => {};
+const commitUpdate = (
+  instance: Instance,
+  updatePayload: UpdatePayload,
+  type: Type,
+  oldProps: Props,
+  newProps: Props,
+  internalInstanceHandle: OpaqueHandle
+): void => {
+  const { olObject } = instance;
+  const { children, args, onUpdate, ...props } = newProps;
+
+  applyProps(olObject, oldProps, props);
+
+  if (typeof onUpdate === "function") {
+    onUpdate(olObject);
+  }
+};
+const insertBefore = (
+  parentInstance: Instance,
+  child: Instance | TextInstance,
+  beforeChild: Instance | TextInstance
+): void => {};
+const insertInContainerBefore = (
+  container: Container,
+  child: Instance | TextInstance,
+  beforeChild: Instance | TextInstance
+): void => {};
+const removeChild = (
+  parentInstance: Instance,
+  childInstance: Instance | TextInstance
+): void => {
+  const { olObject: container } = parentInstance;
+  const { olObject: child, attach, detach } = childInstance;
   if (isFunction(detach)) {
     detach(container, child);
   } else if (isString(attach)) {
@@ -336,30 +388,14 @@ export const removeChild = (
       `React-Openlayers-Fiber Error: Couldn't remove this child from this container. You can specify how to detach this type of child ("${child.constructor.name}") from this type of container ("${container.constructor.name}") using the "attach" props.`
     );
   }
-}
+};
+const removeChildFromContainer = (
+  container: Container,
+  child: Instance | TextInstance
+): void => {};
+const resetTextContent = (instance: Instance): void => {};
 
-export const commitUpdate = (
-  instance,
-  updatePayload,
-  type,
-  oldProps,
-  newProps: React.PropsWithChildren<{
-    args?: any;
-    onUpdate?: any;
-    [key: string]: any;
-  }>
-) => {
-  const { olObject } = instance;
-  const { children, args, onUpdate, ...props } = newProps;
-
-  applyProps(olObject, oldProps, props);
-
-  if (typeof onUpdate === "function") {
-    onUpdate(olObject);
-  }
-}
-
-export const defaultAttach = (
+const defaultAttach = (
   parent: PublicInstance,
   child: PublicInstance,
   parentInstance: Instance,
@@ -459,7 +495,7 @@ export const defaultAttach = (
   }
 };
 
-export const appendChild = (
+const appendChild = (
   parentInstance: Instance,
   childInstance: Instance | TextInstance
 ): void => {
@@ -490,15 +526,13 @@ export const appendChild = (
   }
 };
 
-export const appendChildToContainer = (
+const appendChildToContainer = (
   container: Container,
   child: Instance | TextInstance
 ): void => {
   // //FIXME Badly
   // const containerOlObject =container
-  
   // const { olObject: childOlObject, attach } = child;
-
   // if (isFunction(attach)) {
   //   child.detach = attach(
   //     containerOlObject,
@@ -522,30 +556,6 @@ export const appendChildToContainer = (
   //   throw new Error(`React-Openlayers-Fiber Error: Unsupported "attach" type.`);
   // }
 };
-
-// TODO write this
-function insertBefore(parentInstance: any, child: any, beforeChild: any) {
-  if (child) {
-    // if (child.isObject3D) {
-    //   child.parent = parentInstance;
-    //   child.dispatchEvent({ type: "added" });
-    //   const restSiblings = parentInstance.children.filter(
-    //     (sibling: any) => sibling !== child
-    //   );
-    //   // TODO: the order is out of whack if data objects are present, has to be recalculated
-    //   const index = restSiblings.indexOf(beforeChild);
-    //   parentInstance.children = [
-    //     ...restSiblings.slice(0, index),
-    //     child,
-    //     ...restSiblings.slice(index),
-    //   ];
-    //   // updateInstance(child);
-    // } else {
-    appendChild(parentInstance, child);
-    // } // TODO: order!!!
-    // invalidateInstance(child);
-  }
-}
 
 const hideInstance = (instance: Instance) => {
   switch (instance.kind) {
@@ -576,8 +586,6 @@ const unhideTextInstance = () => {
 };
 
 const reconciler = ReactReconciler({
-
-
   // List from ./node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
 
   getPublicInstance,
@@ -599,48 +607,56 @@ const reconciler = ReactReconciler({
 
   now,
 
-  isPrimaryRenderer:false,
-  warnsIfNotActing:true,
-  supportsMutation:false,
-  supportsPersistence:false,
-  supportsHydration:false,
+  isPrimaryRenderer: false,
+  warnsIfNotActing: true,
+  supportsMutation: true,
+  supportsPersistence: false,
+  supportsHydration: false,
 
-  DEPRECATED_mountResponderInstance:noOp,
-  DEPRECATED_unmountResponderInstance:noOp,
-  getFundamentalComponentInstance:noOp,
-  mountFundamentalComponent:noOp,
-  shouldUpdateFundamentalComponent:noOp,
-  getInstanceFromNode:noOp,
-  beforeRemoveInstance:noOp,
+  DEPRECATED_mountResponderInstance: noOp,
+  DEPRECATED_unmountResponderInstance: noOp,
+  getFundamentalComponentInstance: noOp,
+  mountFundamentalComponent: noOp,
+  shouldUpdateFundamentalComponent: noOp,
+  getInstanceFromNode: noOp,
+  beforeRemoveInstance: noOp,
   //      Mutation
   //     (optional)
   // -------------------
 
-  // appendChild,
-  // appendChildToContainer,
-  // commitTextUpdate,
-  // commitMount,
-  // commitUpdate,
-  // insertBefore,
-  // insertInContainerBefore,
-  // removeChild,
-  // removeChildFromContainer,
-  // resetTextContent,
-  // hideInstance,
-  // hideTextInstance,
-  // unhideInstance,
-  // unhideTextInstance,
-  // updateFundamentalComponent,
-  // unmountFundamentalComponent,
+  appendChild,
+  appendChildToContainer,
+  commitTextUpdate,
+  commitMount,
+  commitUpdate,
+  insertBefore,
+  insertInContainerBefore,
+  removeChild,
+  removeChildFromContainer,
+  resetTextContent,
+  hideInstance,
+  hideTextInstance,
+  unhideInstance,
+  unhideTextInstance,
+  updateFundamentalComponent: noOp,
+  unmountFundamentalComponent: noOp,
   // //     Persistence
   // //     (optional)
   // // -------------------
-
-  // cloneInstance,
-  // createContainerChildSet,
-  // appendChildToContainerChildSet,
-  // finalizeContainerChildren,
-  // replaceContainerChildren,
+  // cloneInstance?(
+  //     instance: Instance,
+  //     updatePayload: null | UpdatePayload,
+  //     type: Type,
+  //     oldProps: Props,
+  //     newProps: Props,
+  //     internalInstanceHandle: OpaqueHandle,
+  //     keepChildren: boolean,
+  //     recyclableInstance: Instance,
+  // ): Instance;
+  // createContainerChildSet?(container: Container): ChildSet;
+  // appendChildToContainerChildSet?(childSet: ChildSet, child: Instance | TextInstance): void;
+  // finalizeContainerChildren?(container: Container, newChildren: ChildSet): void;
+  // replaceContainerChildren?(container: Container, newChildren: ChildSet): void;
   // cloneHiddenInstance,
   // cloneHiddenTextInstance,
   // cloneFundamentalInstance,
@@ -675,52 +691,10 @@ const reconciler = ReactReconciler({
   // didNotFindHydratableTextInstance,
   // didNotFindHydratableSuspenseInstance,
 
-
-
-
-
-
-
   ///////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
 
   // List from node_modules/@types/react-reconciler/index.d.ts
-
-  // getPublicInstance,
-  // getRootHostContext,
-  // getChildHostContext,
-
-  // prepareForCommit,
-  // resetAfterCommit,
-
-  // createInstance,
-  // appendInitialChild,
-  // finalizeInitialChildren,
-
-  // prepareUpdate,
-
-  // shouldSetTextContent,
-  // shouldDeprioritizeSubtree,
-
-  // createTextInstance,
-
-  // scheduleDeferredCallback,
-  // cancelDeferredCallback,
-
-  // setTimeout,
-  // clearTimeout,
-  // noTimeout,
-
-  // now,
-
-  // // Temporary workaround for scenario where multiple renderers concurrently
-  // // render using the same context objects. E.g. React DOM and React ART on the
-  // // same page. DOM is the primary renderer; ART is the secondary renderer.
-  // isPrimaryRenderer: false,
-
-  // supportsMutation: true,
-  // supportsPersistence: false,
-  // supportsHydration: false,
 
   // // -------------------
   // //      Mutation

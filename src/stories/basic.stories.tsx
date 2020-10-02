@@ -11,13 +11,16 @@ import GeometryLayout from "ol/geom/GeometryLayout";
 require("ol/ol.css");
 
 export default {
-  title: "Components/Basic",
+  title: "Examples/1-Basic",
   component: Map,
 };
 
 export const Primary: Story<{}> = (args) => (
   <Map style={{ width: "100%", height: "640px" }}>
-    <olView center={[0, 0]} zoom={2} />
+    <olView 
+     args={{center:[0, 6000000], zoom:6}}
+    // center={[0, 6000000]} zoom={6}
+    />
     <olLayerTile>
       <olSourceOSM/>
     </olLayerTile>
