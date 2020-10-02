@@ -23,11 +23,9 @@ import {
   keys,
   map,
   forEach,
+  has,
   toPairs,
 } from "lodash/fp";
-
-
-const forEachUncapped = forEach.convert({cap:false});
 
 // Imports from the imperative lib
 
@@ -83,7 +81,7 @@ export type HostContext = {};
 export type UpdatePayload = boolean;
 export type ChildSet = void;
 export type TimeoutHandle = TimerHandler;
-export type NoTimeout = -1;
+export type NoTimeout = number;
 
 // export type Reconciler = HostConfig<
 //   Type,
@@ -108,6 +106,165 @@ const error002 = (containerType, childType) =>
   new Error(
     `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props.`
   );
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// Util functions
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ *
+ * This code checks, for every given props,
+ * if the ol entity has a setter for the prop.
+ * If it has one, it sets the value to the ol object,
+ * but it only sets it if it changed from the previous props.
+ *
+ * @param olObject The ol object to update
+ * @param newProps The newProps potentially containing new changes
+ */
+const applyProps = (
+  olObject: OlObject,
+  oldProps: object = {},
+  newProps: object
+): void => {
+  const setterGeneric = olObject.set;
+  forEach((key) => {
+    if (oldProps[key] !== newProps[key]) {
+      // For special cases (for example ol objects that have an option called "key"), we can add a "_" before.
+      const olKey = startsWith("_", key) ? key.substring(1) : key;
+      const keySetter = `set${upperFirst(olKey)}`;
+      const setterSpecificKey = olObject[keySetter];
+      if (isFunction(setterSpecificKey)) {
+        setterSpecificKey.bind(olObject)(newProps[key]);
+      } else if (isFunction(setterGeneric)) {
+        setterGeneric.bind(olObject)(olKey, newProps[key]);
+      } else if (has(olKey, olObject)) {
+        console.warn(
+          `React-Openlayers-Fiber Warning: Setting the property ${olKey} brutally because there is no setter on the object`
+        );
+        console.warn(olObject);
+        olObject[olKey] = newProps[key];
+      } else {
+        console.error(
+          `React-Openlayers-Fiber Error: Setting the property ${olKey} very brutally because there is no setter on the object nor the object has this key... This is probably an error`
+        );
+        console.error(olObject);
+        olObject[olKey] = newProps[key];
+      }
+    }
+  }, keys(newProps));
+};
+
+const defaultAttach = (
+  parent: PublicInstance,
+  child: PublicInstance,
+  parentInstance: Instance,
+  childInstance: Instance | TextInstance
+): Detach => {
+  const {
+    olObject: containerOlObject,
+    kind: containerKind,
+    type: containerType,
+  } = parentInstance;
+  const {
+    olObject: childOlObject,
+    kind: childKind,
+    type: childType,
+    attach,
+  } = childInstance;
+
+  switch (containerKind) {
+    case "Map": {
+      switch (childKind) {
+        case "View":
+          (containerOlObject as OlMap).setView(childOlObject as OlView);
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlMap).unset("view"); // Dubious at best
+        case "Layer":
+          (containerOlObject as OlMap).addLayer(childOlObject as Layer);
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlMap).removeLayer(childOlObject as Layer);
+        case "Control":
+          (containerOlObject as OlMap).addControl(childOlObject as Control);
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlMap).removeControl(
+              childOlObject as Control
+            );
+        case "Interaction":
+          (containerOlObject as OlMap).addInteraction(
+            childOlObject as Interaction
+          );
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlMap).removeInteraction(
+              childOlObject as Interaction
+            );
+        case "Overlay":
+          (containerOlObject as OlMap).addOverlay(childOlObject as Overlay);
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlMap).removeOverlay(
+              childOlObject as Overlay
+            );
+        default:
+          throw error002(containerKind, childKind);
+      }
+    }
+    case "Layer": {
+      switch (childKind) {
+        case "Source":
+          (containerOlObject as Layer).setSource(childOlObject as Source);
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as Layer).unset("source"); // Dubious at best
+        default:
+          throw error002(containerKind, childKind);
+      }
+    }
+    case "Source": {
+      switch (childKind) {
+        case "Feature":
+          (containerOlObject as SourceVector).addFeature(
+            childOlObject as OlFeature
+          );
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as SourceVector).removeFeature(
+              childOlObject as OlFeature
+            ); // Dubious at best
+        case "Source":
+          (containerOlObject as SourceCluster).setSource(
+            childOlObject as SourceVector
+          );
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as SourceCluster).unset("source"); // Dubious at best
+        default:
+          throw error002(containerKind, childKind);
+      }
+    }
+    case "Feature": {
+      switch (childKind) {
+        case "Geom":
+          (containerOlObject as OlFeature).setGeometry(
+            childOlObject as Geometry
+          );
+          return (containerOlObject, childOlObject) =>
+            (containerOlObject as OlFeature).unset("geometry"); // Dubious at best
+        default:
+          throw error002(containerKind, childKind);
+      }
+    }
+    default:
+      throw error002(containerKind, childKind);
+  }
+};
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// Hot Config functions
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 const getPublicInstance = (
   instance: Instance | TextInstance
@@ -275,77 +432,31 @@ const createTextInstance = (
   return null;
 };
 
-const scheduleDeferredCallback = (
-  callback: () => any,
-  options?: { timeout: number }
-): any => {
-  //TODO
-};
+const scheduleTimeout:
+  | ((
+      handler: (...args: any[]) => void,
+      timeout: number
+    ) => TimeoutHandle | NoTimeout)
+  | null = isFunction(setTimeout) ? setTimeout : null;
 
-const cancelDeferredCallback = (callbackID: any): void => {
-  //TODO
-};
-
-const setTimeout = (
-  handler: (...args: any[]) => void,
-  timeout: number
-): TimeoutHandle | NoTimeout => {
-  //TODO
-  return -1;
-};
-const clearTimeout = (handle: TimeoutHandle | NoTimeout): void => {
-  //TODO
-};
+const cancelTimeout:
+  | ((handle: TimeoutHandle | NoTimeout) => void)
+  | null = isFunction(clearTimeout) ? clearTimeout : null;
 const noTimeout: NoTimeout = -1;
-
-/**
- *
- * This code checks, for every given props,
- * if the ol entity has a setter for the prop.
- * If it has one, it sets the value to the ol object,
- * but it only sets it if it changed from the previous props.
- *
- * @param olObject The ol object to update
- * @param newProps The newProps potentially containing new changes
- */
-const applyProps = (
-  olObject: OlObject,
-  oldProps: object = {},
-  newProps: object
-): void => {
-  const setterGeneric = olObject.set;
-  forEach((key) => {
-    if (oldProps[key] !== newProps[key]) {
-      // For special cases (for example ol objects that have an option called "key"), we can add a "_" before.
-      const olKey = startsWith("_", key) ? key.substring(1) : key;
-      const keySetter = `set${upperFirst(olKey)}`
-      const setterSpecificKey = olObject[keySetter];
-      if (isFunction(setterSpecificKey)) {
-        setterSpecificKey.bind(olObject)(newProps[key]);
-      } else if (isFunction(setterGeneric)) {
-        setterGeneric.bind(olObject)(olKey, newProps[key]);
-      } else {
-        console.warn(
-          `React-Openlayers-Fiber Warning: Setting the property ${olKey} brutally because there is no setter on the object`
-        );
-        console.warn(olObject);
-        olObject[olKey] = newProps[key];
-      }
-    }
-  }, keys(newProps));
-};
 
 const commitTextUpdate = (
   textInstance: TextInstance,
   oldText: string,
   newText: string
 ): void => {};
+
 const commitMount = (
   instance: Instance,
   type: Type,
   newProps: Props,
   internalInstanceHandle: OpaqueHandle
 ): void => {};
+
 const commitUpdate = (
   instance: Instance,
   updatePayload: UpdatePayload,
@@ -363,16 +474,19 @@ const commitUpdate = (
     onUpdate(olObject);
   }
 };
+
 const insertBefore = (
   parentInstance: Instance,
   child: Instance | TextInstance,
   beforeChild: Instance | TextInstance
 ): void => {};
+
 const insertInContainerBefore = (
   container: Container,
   child: Instance | TextInstance,
   beforeChild: Instance | TextInstance
 ): void => {};
+
 const removeChild = (
   parentInstance: Instance,
   childInstance: Instance | TextInstance
@@ -389,111 +503,13 @@ const removeChild = (
     );
   }
 };
+
 const removeChildFromContainer = (
   container: Container,
   child: Instance | TextInstance
 ): void => {};
+
 const resetTextContent = (instance: Instance): void => {};
-
-const defaultAttach = (
-  parent: PublicInstance,
-  child: PublicInstance,
-  parentInstance: Instance,
-  childInstance: Instance | TextInstance
-): Detach => {
-  const {
-    olObject: containerOlObject,
-    kind: containerKind,
-    type: containerType,
-  } = parentInstance;
-  const {
-    olObject: childOlObject,
-    kind: childKind,
-    type: childType,
-    attach,
-  } = childInstance;
-
-  switch (containerKind) {
-    case "Map": {
-      switch (childKind) {
-        case "View":
-          (containerOlObject as OlMap).setView(childOlObject as OlView);
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlMap).unset("view"); // Dubious at best
-        case "Layer":
-          (containerOlObject as OlMap).addLayer(childOlObject as Layer);
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlMap).removeLayer(childOlObject as Layer);
-        case "Control":
-          (containerOlObject as OlMap).addControl(childOlObject as Control);
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlMap).removeControl(
-              childOlObject as Control
-            );
-        case "Interaction":
-          (containerOlObject as OlMap).addInteraction(
-            childOlObject as Interaction
-          );
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlMap).removeInteraction(
-              childOlObject as Interaction
-            );
-        case "Overlay":
-          (containerOlObject as OlMap).addOverlay(childOlObject as Overlay);
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlMap).removeOverlay(
-              childOlObject as Overlay
-            );
-        default:
-          throw error002(containerKind, childKind);
-      }
-    }
-    case "Layer": {
-      switch (childKind) {
-        case "Source":
-          (containerOlObject as Layer).setSource(childOlObject as Source);
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as Layer).unset("source"); // Dubious at best
-        default:
-          throw error002(containerKind, childKind);
-      }
-    }
-    case "Source": {
-      switch (childKind) {
-        case "Feature":
-          (containerOlObject as SourceVector).addFeature(
-            childOlObject as OlFeature
-          );
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as SourceVector).removeFeature(
-              childOlObject as OlFeature
-            ); // Dubious at best
-        case "Source":
-          (containerOlObject as SourceCluster).setSource(
-            childOlObject as SourceVector
-          );
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as SourceCluster).unset("source"); // Dubious at best
-        default:
-          throw error002(containerKind, childKind);
-      }
-    }
-    case "Feature": {
-      switch (childKind) {
-        case "Geom":
-          (containerOlObject as OlFeature).setGeometry(
-            childOlObject as Geometry
-          );
-          return (containerOlObject, childOlObject) =>
-            (containerOlObject as OlFeature).unset("geometry"); // Dubious at best
-        default:
-          throw error002(containerKind, childKind);
-      }
-    }
-    default:
-      throw error002(containerKind, childKind);
-  }
-};
 
 const appendChild = (
   parentInstance: Instance,
@@ -521,6 +537,23 @@ const appendChild = (
     childInstance.detach = (containerOlObject, childOlObject) => {
       delete containerOlObject[attach];
     };
+
+    const setterGeneric = containerOlObject.set;
+    // From there, the code is very similar to the function applyProps
+    const keySetter = `set${upperFirst(attach)}`;
+    const setterSpecificKey = containerOlObject[keySetter];
+    if (isFunction(setterSpecificKey)) {
+      setterSpecificKey.bind(containerOlObject)(childOlObject);
+    } else if (isFunction(setterGeneric)) {
+      setterGeneric.bind(containerOlObject)(attach, childOlObject);
+    } else {
+      console.warn(
+        `React-Openlayers-Fiber Warning: Attaching the child ${attach} brutally because there is no setter on the object`
+      );
+      console.warn(containerOlObject);
+      console.warn(childOlObject);
+      containerOlObject[attach] = childOlObject;
+    }
   } else {
     throw new Error(`React-Openlayers-Fiber Error: Unsupported "attach" type.`);
   }
@@ -601,9 +634,9 @@ const reconciler = ReactReconciler({
   shouldDeprioritizeSubtree,
   createTextInstance,
 
-  scheduleTimeout: isFunction(setTimeout) ? setTimeout : undefined,
-  cancelTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
-  noTimeout: -1,
+  scheduleTimeout,
+  cancelTimeout,
+  noTimeout,
 
   now,
 
@@ -824,45 +857,11 @@ const reconciler = ReactReconciler({
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  // // Boolean flags
-  // // @ts-ignore
-  // warnsIfNotActing: true,
-  // supportsMutation: true,
-  // isPrimaryRenderer: false,
-
-  // // Scheduling stuff
-
-  // scheduleTimeout: isFunction(setTimeout) ? setTimeout : undefined,
-  // cancelTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
-  // setTimeout: isFunction(setTimeout) ? setTimeout : undefined,
-  // clearTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
-  // noTimeout: -1,
-
   // // Tree manipulation
   // appendInitialChild: appendChild,
   // appendChildToContainer: appendChild,
   // removeChildFromContainer: appendChild,
   // insertInContainerBefore: insertBefore,
-
-  // // Update commit
-  // commitUpdate,
-  // prepareUpdate,
-
-  // // Hide / unhide stuff
-  // hideInstance,
-  // unhideInstance,
-  // hideTextInstance,
-  // unhideTextInstance,
-
-  // //
-
-  // getChildHostContext,
-
-  // finalizeInitialChildren,
-
-  // shouldSetTextContent,
-
-  // replaceContainerChildren() {},
 });
 
 export function render(what: React.ReactNode, where: HTMLElement) {
