@@ -104,7 +104,7 @@ const noOp = () => {};
 
 const error002 = (containerType, childType) =>
   new Error(
-    `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props.`
+    `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props. If you think this should be done automatically, open an issue here https://github.com/crubier/react-openlayers-fiber/issues/new?title=Support+${childType}+in+${containerType}&body=Support+${childType}+in+${containerType}`
   );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -330,7 +330,7 @@ const createInstance = (
         `React-Openlayers-Fiber Error: ${type} is not exported by ol. Use extend to add it if needed.`
       );
     } else if (isNil(constructFrom)) {
-      // No contructFrom prop (most common)
+      // No constructFrom prop (most common)
       if (isNil(args)) {
         // No args, simple ol object with a single options object arg
         olObject = new (target.object as new (arg: any) => any)(
@@ -518,14 +518,7 @@ const appendChild = (
   const { olObject: containerOlObject } = parentInstance;
   const { olObject: childOlObject, attach } = childInstance;
 
-  if (isFunction(attach)) {
-    childInstance.detach = attach(
-      containerOlObject,
-      childOlObject,
-      parentInstance,
-      childInstance
-    );
-  } else if (isNil(attach)) {
+  if (isNil(attach)) {
     childInstance.detach = defaultAttach(
       containerOlObject,
       childOlObject,
@@ -537,7 +530,6 @@ const appendChild = (
     childInstance.detach = (containerOlObject, childOlObject) => {
       delete containerOlObject[attach];
     };
-
     const setterGeneric = containerOlObject.set;
     // From there, the code is very similar to the function applyProps
     const keySetter = `set${upperFirst(attach)}`;
@@ -554,6 +546,13 @@ const appendChild = (
       console.warn(childOlObject);
       containerOlObject[attach] = childOlObject;
     }
+  } else if (isFunction(attach)) {
+    childInstance.detach = attach(
+      containerOlObject,
+      childOlObject,
+      parentInstance,
+      childInstance
+    );
   } else {
     throw new Error(`React-Openlayers-Fiber Error: Unsupported "attach" type.`);
   }
@@ -750,7 +749,7 @@ const reconciler = ReactReconciler({
   //     newProps: Props,
   //     internalInstanceHandle: OpaqueHandle,
   // ): void;
-  // insertBefore?(parentInstance: Instance, child: Instance | TextInstance, beforeChild: Instance | TextInstance): void;
+
   // insertInContainerBefore?(
   //     container: Container,
   //     child: Instance | TextInstance,

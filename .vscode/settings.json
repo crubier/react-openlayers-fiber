@@ -1,3 +1,9 @@
 {
-    "typescript.tsdk": "/Users/vincent/Code/react-openlayers-fiber/node_modules/typescript/lib"
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "cSpell.words": [
+        "Deprioritize",
+        "Openlayers",
+        "unhide",
+        "unmount"
+    ]
 }
