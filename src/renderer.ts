@@ -580,8 +580,6 @@ const reconciler = ReactReconciler({
 
   // List from ./node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
 
-
-
   getPublicInstance,
   getRootHostContext,
   getChildHostContext,
@@ -597,27 +595,23 @@ const reconciler = ReactReconciler({
 
   scheduleTimeout: isFunction(setTimeout) ? setTimeout : undefined,
   cancelTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
-  // setTimeout: isFunction(setTimeout) ? setTimeout : undefined,
-  // clearTimeout: isFunction(clearTimeout) ? clearTimeout : undefined,
   noTimeout: -1,
 
-
-  // scheduleTimeout,
-  // cancelTimeout,
-  // noTimeout,
   now,
+
   isPrimaryRenderer:false,
   warnsIfNotActing:true,
   supportsMutation:false,
   supportsPersistence:false,
   supportsHydration:false,
-  DEPRECATED_mountResponderInstance,
-  DEPRECATED_unmountResponderInstance,
-  getFundamentalComponentInstance,
-  mountFundamentalComponent,
-  shouldUpdateFundamentalComponent,
-  getInstanceFromNode,
-  beforeRemoveInstance,
+
+  DEPRECATED_mountResponderInstance:noOp,
+  DEPRECATED_unmountResponderInstance:noOp,
+  getFundamentalComponentInstance:noOp,
+  mountFundamentalComponent:noOp,
+  shouldUpdateFundamentalComponent:noOp,
+  getInstanceFromNode:noOp,
+  beforeRemoveInstance:noOp,
   //      Mutation
   //     (optional)
   // -------------------
