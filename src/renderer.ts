@@ -98,7 +98,7 @@ export type NoTimeout = number;
 //   NoTimeout
 // >;
 
-const instances = new Map();
+const instances = new Map<HTMLElement, OlMap>();
 const emptyObject = {};
 const noOp = () => {};
 
@@ -479,13 +479,20 @@ const insertBefore = (
   parentInstance: Instance,
   child: Instance | TextInstance,
   beforeChild: Instance | TextInstance
-): void => {};
+): void => {
+  console.log("insertBefore");
+  console.log(parentInstance);
+  console.log(child);
+  console.log(beforeChild);
+};
 
 const insertInContainerBefore = (
   container: Container,
   child: Instance | TextInstance,
   beforeChild: Instance | TextInstance
-): void => {};
+): void => {
+  // There can only be one map in its parent div
+};
 
 const removeChild = (
   parentInstance: Instance,
@@ -507,7 +514,11 @@ const removeChild = (
 const removeChildFromContainer = (
   container: Container,
   child: Instance | TextInstance
-): void => {};
+): void => {
+  // Probably not neded
+  // There can only be one map in its parent div
+  (child.olObject as OlMap).setTarget(null);
+};
 
 const resetTextContent = (instance: Instance): void => {};
 
@@ -515,6 +526,9 @@ const appendChild = (
   parentInstance: Instance,
   childInstance: Instance | TextInstance
 ): void => {
+  console.log("appendChild");
+  console.log(parentInstance);
+  console.log(childInstance);
   const { olObject: containerOlObject } = parentInstance;
   const { olObject: childOlObject, attach } = childInstance;
 
@@ -562,31 +576,11 @@ const appendChildToContainer = (
   container: Container,
   child: Instance | TextInstance
 ): void => {
-  // //FIXME Badly
-  // const containerOlObject =container
-  // const { olObject: childOlObject, attach } = child;
-  // if (isFunction(attach)) {
-  //   child.detach = attach(
-  //     containerOlObject,
-  //     childOlObject,
-  //     null,//FIXME Badly
-  //     child
-  //   );
-  // } else if (isNil(attach)) {
-  //   child.detach = defaultAttach(
-  //     containerOlObject,
-  //     childOlObject,
-  //     null,//FIXME Badly
-  //     child
-  //   );
-  // } else if (isString(attach)) {
-  //   containerOlObject[attach] = childOlObject;
-  //   child.detach = (containerOlObject, childOlObject) => {
-  //     delete containerOlObject[attach];
-  //   };
-  // } else {
-  //   throw new Error(`React-Openlayers-Fiber Error: Unsupported "attach" type.`);
-  // }
+  // This would link the map to it's parent div container.
+  // But this is already done in the Map component anyway so not needed here
+  // console.log("appendChildToContainer");
+  // console.log(container);
+  // console.log(child);
 };
 
 const hideInstance = (instance: Instance) => {
@@ -619,7 +613,7 @@ const unhideTextInstance = () => {
 
 const reconciler = ReactReconciler({
   // List from ./node_modules/react-reconciler/cjs/react-reconciler-persistent.development.js
-
+  // -------------------
   getPublicInstance,
   getRootHostContext,
   getChildHostContext,
@@ -632,19 +626,18 @@ const reconciler = ReactReconciler({
   shouldSetTextContent,
   shouldDeprioritizeSubtree,
   createTextInstance,
-
+  // -------------------
   scheduleTimeout,
   cancelTimeout,
   noTimeout,
-
   now,
-
+  // -------------------
   isPrimaryRenderer: false,
   warnsIfNotActing: true,
   supportsMutation: true,
   supportsPersistence: false,
   supportsHydration: false,
-
+  // -------------------
   DEPRECATED_mountResponderInstance: noOp,
   DEPRECATED_unmountResponderInstance: noOp,
   getFundamentalComponentInstance: noOp,
@@ -652,10 +645,10 @@ const reconciler = ReactReconciler({
   shouldUpdateFundamentalComponent: noOp,
   getInstanceFromNode: noOp,
   beforeRemoveInstance: noOp,
+  // -------------------
   //      Mutation
   //     (optional)
   // -------------------
-
   appendChild,
   appendChildToContainer,
   commitTextUpdate,
@@ -672,6 +665,7 @@ const reconciler = ReactReconciler({
   unhideTextInstance,
   updateFundamentalComponent: noOp,
   unmountFundamentalComponent: noOp,
+  // // -------------------
   // //     Persistence
   // //     (optional)
   // // -------------------
@@ -692,101 +686,16 @@ const reconciler = ReactReconciler({
   // cloneHiddenInstance,
   // cloneHiddenTextInstance,
   // cloneFundamentalInstance,
-  // //     Hydration
-  // //     (optional)
-  // // -------------------
-
-  // canHydrateInstance,
-  // canHydrateTextInstance,
-  // canHydrateSuspenseInstance,
-  // isSuspenseInstancePending,
-  // isSuspenseInstanceFallback,
-  // registerSuspenseInstanceRetry,
-  // getNextHydratableSibling,
-  // getFirstHydratableChild,
-  // hydrateInstance,
-  // hydrateTextInstance,
-  // hydrateSuspenseInstance,
-  // getNextHydratableInstanceAfterSuspenseInstance,
-  // commitHydratedContainer,
-  // commitHydratedSuspenseInstance,
-  // clearSuspenseBoundary,
-  // clearSuspenseBoundaryFromContainer,
-  // didNotMatchHydratedContainerTextInstance,
-  // didNotMatchHydratedTextInstance,
-  // didNotHydrateContainerInstance,
-  // didNotHydrateInstance,
-  // didNotFindHydratableContainerInstance,
-  // didNotFindHydratableContainerTextInstance,
-  // didNotFindHydratableContainerSuspenseInstance,
-  // didNotFindHydratableInstance,
-  // didNotFindHydratableTextInstance,
-  // didNotFindHydratableSuspenseInstance,
-
-  ///////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////
-
-  // List from node_modules/@types/react-reconciler/index.d.ts
-
-  // // -------------------
-  // //      Mutation
-  // //     (optional)
-  // // -------------------
-  // appendChild,
-  // appendChildToContainer,
-  // commitTextUpdate?(textInstance: TextInstance, oldText: string, newText: string): void;
-  // commitMount?(
-  //     instance: Instance,
-  //     type: Type,
-  //     newProps: Props,
-  //     internalInstanceHandle: OpaqueHandle,
-  // ): void;
-  // commitUpdate?(
-  //     instance: Instance,
-  //     updatePayload: UpdatePayload,
-  //     type: Type,
-  //     oldProps: Props,
-  //     newProps: Props,
-  //     internalInstanceHandle: OpaqueHandle,
-  // ): void;
-
-  // insertInContainerBefore?(
-  //     container: Container,
-  //     child: Instance | TextInstance,
-  //     beforeChild: Instance | TextInstance,
-  // ): void;
-  // removeChild?(parentInstance: Instance, child: Instance | TextInstance): void;
-  // removeChildFromContainer?(container: Container, child: Instance | TextInstance): void;
-  // resetTextContent?(instance: Instance): void;
-
-  // // -------------------
-  // //     Persistence
-  // //     (optional)
-  // // -------------------
-  // cloneInstance?(
-  //     instance: Instance,
-  //     updatePayload: null | UpdatePayload,
-  //     type: Type,
-  //     oldProps: Props,
-  //     newProps: Props,
-  //     internalInstanceHandle: OpaqueHandle,
-  //     keepChildren: boolean,
-  //     recyclableInstance: Instance,
-  // ): Instance;
-
-  // createContainerChildSet?(container: Container): ChildSet;
-
-  // appendChildToContainerChildSet?(childSet: ChildSet, child: Instance | TextInstance): void;
-  // finalizeContainerChildren?(container: Container, newChildren: ChildSet): void;
-
-  // replaceContainerChildren?(container: Container, newChildren: ChildSet): void;
-
   // // -------------------
   // //     Hydration
   // //     (optional)
   // // -------------------
   // canHydrateInstance?(instance: HydratableInstance, type: Type, props: Props): null | Instance;
   // canHydrateTextInstance?(instance: HydratableInstance, text: string): null | TextInstance;
+  // canHydrateSuspenseInstance:noOp,
+  // isSuspenseInstancePending:noOp,
+  // isSuspenseInstanceFallback:noOp,
+  // registerSuspenseInstanceRetry:noOp,
   // getNextHydratableSibling?(instance: Instance | TextInstance | HydratableInstance): null | HydratableInstance;
   // getFirstHydratableChild?(parentInstance: Instance | Container): null | HydratableInstance;
   // hydrateInstance?(
@@ -802,6 +711,12 @@ const reconciler = ReactReconciler({
   //     text: string,
   //     internalInstanceHandle: OpaqueHandle,
   // ): boolean;
+  // hydrateSuspenseInstance:noOp,
+  // getNextHydratableInstanceAfterSuspenseInstance:noOp,
+  // commitHydratedContainer:noOp,
+  // commitHydratedSuspenseInstance:noOp,
+  // clearSuspenseBoundary:noOp,
+  // clearSuspenseBoundaryFromContainer:noOp,
   // didNotMatchHydratedContainerTextInstance?(
   //     parentContainer: Container,
   //     textInstance: TextInstance,
@@ -830,6 +745,7 @@ const reconciler = ReactReconciler({
   //     parentContainer: Container,
   //     text: string,
   // ): void;
+  // didNotFindHydratableContainerSuspenseInstance:noOp,
   // didNotFindHydratableInstance?(
   //     parentType: Type,
   //     parentProps: Props,
@@ -843,24 +759,8 @@ const reconciler = ReactReconciler({
   //     parentInstance: Instance,
   //     text: string,
   // ): void;
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-  // // Tree manipulation
-  // appendInitialChild: appendChild,
-  // appendChildToContainer: appendChild,
-  // removeChildFromContainer: appendChild,
-  // insertInContainerBefore: insertBefore,
+  // didNotFindHydratableSuspenseInstance:noOp,
+  // // -------------------
 });
 
 export function render(what: React.ReactNode, where: HTMLElement) {

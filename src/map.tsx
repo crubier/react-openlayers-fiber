@@ -15,7 +15,7 @@ export const Map = ({
   args = defaultArgs,
   style = defaultStyle,
   ...mapProps
-}: ReactOlFiber.Component<OlMap, [ConstructorParameters<typeof OlMap>[1]]> & {
+}: ReactOlFiber.IntrinsicElements["olMap"] & {
   style?: React.CSSProperties;
 }): React.ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
