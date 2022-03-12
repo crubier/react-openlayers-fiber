@@ -1,0 +1,17 @@
+{
+  "index": {
+    "title": "Introduction",
+    "type": "page",
+    "theme": {
+      "sidebar": false
+    }
+  },
+  "docs": {
+    "title": "Docs",
+    "type": "page"
+  },
+  "examples": {
+    "title": "Examples",
+    "type": "page"
+  }
+}

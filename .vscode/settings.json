@@ -1,9 +1,34 @@
 {
-    "typescript.tsdk": "./node_modules/typescript/lib",
-    "cSpell.words": [
-        "Deprioritize",
-        "Openlayers",
-        "unhide",
-        "unmount"
-    ]
+  "[typescript]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "cSpell.words": [
+    "Heatmap",
+    "Mapbox",
+    "WMTS",
+    "Zoomify",
+    "openlayers",
+    "upsert"
+  ],
+  "jest.jestCommandLine": "yarn test",
+  "gitlens.views.commits.files.layout": "tree",
+  "gitlens.views.repositories.files.layout": "tree",
+  "gitlens.views.fileHistory.files.layout": "tree",
+  "gitlens.views.branches.files.layout": "tree",
+  "gitlens.views.remotes.files.layout": "tree",
+  "gitlens.views.stashes.files.layout": "tree",
+  "gitlens.views.tags.files.layout": "tree",
+  "gitlens.views.worktrees.files.layout": "tree",
+  "gitlens.views.contributors.files.layout": "tree",
+  "gitlens.views.searchAndCompare.files.layout": "tree"
 }
