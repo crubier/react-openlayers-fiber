@@ -1,0 +1,147 @@
+# Dynamic Data
+
+See https://openlayers.org/en/latest/examples/dynamic-data.html
+
+import React, { useRef } from "react";
+import "ol/ol.css";
+import { Map as OlMap } from "ol";
+import { Style, Fill, Stroke, Circle as CircleStyle } from "ol/style";
+import { Point, MultiPoint } from "ol/geom";
+import { getVectorContext } from "ol/render";
+import { Map } from "@react-ol/fiber";
+
+export const imageStyle = new Style({
+  image: new CircleStyle({
+    radius: 5,
+    fill: new Fill({ color: "yellow" }),
+    stroke: new Stroke({ color: "red", width: 1 }),
+  }),
+});
+
+export const headInnerImageStyle = new Style({
+  image: new CircleStyle({
+    radius: 2,
+    fill: new Fill({ color: "blue" }),
+  }),
+});
+
+export const headOuterImageStyle = new Style({
+  image: new CircleStyle({
+    radius: 5,
+    fill: new Fill({ color: "black" }),
+  }),
+});
+
+export const n = 200;
+export const omegaTheta = 30000;
+export const R = 7e6;
+export const r = 2e6;
+export const p = 2e6;
+
+export const ExampleDynamicData = () => {
+  const mapRef = useRef(null);
+  const onPostrender = (event) => {
+    const vectorContext = getVectorContext(event);
+    const { frameState } = event;
+    const theta = (2 * Math.PI * (frameState?.time ?? 0)) / omegaTheta;
+    const coordinates = [];
+    let i;
+    for (i = 0; i < n; i += 1) {
+      const t = theta + (2 * Math.PI * i) / n;
+      const x = (R + r) * Math.cos(t) + p * Math.cos(((R + r) * t) / r);
+      const y = (R + r) * Math.sin(t) + p * Math.sin(((R + r) * t) / r);
+      coordinates.push([x, y]);
+    }
+    vectorContext.setStyle(imageStyle);
+    vectorContext.drawGeometry(new MultiPoint(coordinates));
+    const headPoint = new Point(coordinates[coordinates.length - 1]);
+    vectorContext.setStyle(headOuterImageStyle);
+    vectorContext.drawGeometry(headPoint);
+    vectorContext.setStyle(headInnerImageStyle);
+    vectorContext.drawGeometry(headPoint);
+    mapRef.current?.render();
+    return true;
+  };
+  return (
+    <Map ref={mapRef} className="rounded-xl overflow-hidden mt-4">
+      <olView initialCenter={[0, 0]} initialZoom={2} />
+      <olLayerTile onPostrender={onPostrender}>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<ExampleDynamicData />
+
+```tsx
+import React, { useRef } from "react";
+import "ol/ol.css";
+import { Map as OlMap } from "ol";
+import { Style, Fill, Stroke, Circle as CircleStyle } from "ol/style";
+import { Point, MultiPoint } from "ol/geom";
+import { getVectorContext } from "ol/render";
+import { Map } from "@react-ol/fiber";
+
+export const imageStyle = new Style({
+  image: new CircleStyle({
+    radius: 5,
+    fill: new Fill({ color: "yellow" }),
+    stroke: new Stroke({ color: "red", width: 1 }),
+  }),
+});
+
+export const headInnerImageStyle = new Style({
+  image: new CircleStyle({
+    radius: 2,
+    fill: new Fill({ color: "blue" }),
+  }),
+});
+
+export const headOuterImageStyle = new Style({
+  image: new CircleStyle({
+    radius: 5,
+    fill: new Fill({ color: "black" }),
+  }),
+});
+
+export const n = 200;
+export const omegaTheta = 30000;
+export const R = 7e6;
+export const r = 2e6;
+export const p = 2e6;
+
+export const ExampleDynamicData = () => {
+  const mapRef = useRef(null);
+  const onPostrender = (event) => {
+    const vectorContext = getVectorContext(event);
+    const { frameState } = event;
+    const theta = (2 * Math.PI * (frameState?.time ?? 0)) / omegaTheta;
+    const coordinates = [];
+    let i;
+    for (i = 0; i < n; i += 1) {
+      const t = theta + (2 * Math.PI * i) / n;
+      const x = (R + r) * Math.cos(t) + p * Math.cos(((R + r) * t) / r);
+      const y = (R + r) * Math.sin(t) + p * Math.sin(((R + r) * t) / r);
+      coordinates.push([x, y]);
+    }
+    vectorContext.setStyle(imageStyle);
+    vectorContext.drawGeometry(new MultiPoint(coordinates));
+    const headPoint = new Point(coordinates[coordinates.length - 1]);
+    vectorContext.setStyle(headOuterImageStyle);
+    vectorContext.drawGeometry(headPoint);
+    vectorContext.setStyle(headInnerImageStyle);
+    vectorContext.drawGeometry(headPoint);
+    mapRef.current?.render();
+    return true;
+  };
+  return (
+    <Map ref={mapRef}>
+      <olView initialCenter={[0, 0]} initialZoom={2} />
+      <olLayerTile onPostrender={onPostrender}>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+```
