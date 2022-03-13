@@ -1,110 +1,57 @@
 ---
-title: React Openlayers Fiber
+title: React OpenLayers Fiber
 ---
-
-import Callout from "nextra-theme-docs/callout";
-import Bleed from "nextra-theme-docs/bleed";
 
 # React OpenLayers Fiber
 
-## Install
+`@react-ol/fiber` is a react renderer for OpenLayers https://openlayers.org/ .
 
-```sh
-yarn add @react-ol/fiber
-```
+It is based on the same concept as `@react-three/fiber` for Three.js.
 
-## Usage
+## What does it look like?
 
 ```tsx
-import { Map } from "@react-ol/fibe";
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
 
-function MyMap() {
-  return (
-    <Map style={{ width: "100%", height: "640px" }}>
-      <olView center={[0, 6000000]} zoom={6} />
-      <olLayerTile>
-        <olSourceOSM />
-      </olLayerTile>
-    </Map>
-  );
-}
+export const Example = () => (
+  <Map style={{ width: "100%", height: "640px" }}>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
 ```
 
-## Examples
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
 
-To see more examples you must start storybook:
+export const Example = () => (
+  <Map style={{ width: "100%", height: "640px" }}>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
 
-```sh
-yarn start
-```
+<Example />
 
-Most of the examples comes from [openlayers examples section](https://openlayers.org/en/latest/examples/).
+## Why?
 
-## Props lifecycle
+Build your maps declaratively with re-usable, self-contained components that react to state, are readily interactive and can tap into React's ecosystem.
 
-The openlayers components take three differents kind of props:
+### Does it have limitations?
 
-- classic ones
-- the args prop
-- props prefixed with initial
+None. Everything that works in OpenLayers will work here without exception.
 
-The classic ones behave like any prop in React but the openlayer object must have a setter for the prop to work fine (or being settable by the generic setter `set(key, value)`.
+### Can it keep up with frequent updates to OpenLayers?
 
-### args
+Yes. There is no hard dependency on a particular OpenLayers version, it does not wrap or duplicate a single OpenLayers class. It merely expresses OpenLayers in JSX: `<olView />` becomes `new ol.View()`, and that happens dynamically.
 
-If a property of an openlayers object doesn't have a specific setter or isn't updatable through the generic setter you must use the `args` prop. Here is an example:
+### Is it slower than plain OpenLayers?
 
-```tsx
-function MyMap() {
-  return (
-    <Map style={{ width: "100%", height: "640px" }}>
-      <olView initialCenter={[0, 6000000]} initialZoom={6} />
-      <olLayerTile>
-        <olSourceOSM />
-      </olLayerTile>
-      <olLayerVector>
-        <olSourceVector>
-          <olFeature>
-            <olStyleStyle attach="style">
-              <olStyleRegularShape
-                attach="image"
-                args={{
-                  fill,
-                  stroke,
-                  radius: 20,
-                  points: 4,
-                  angle: Math.PI / 4,
-                }}
-              />
-            </olStyleStyle>
-            <olGeomPoint coordinates={[0, 6000000]} />
-          </olFeature>
-        </olSourceVector>
-      </olLayerVector>
-    </Map>
-  );
-}
-```
-
-The args's properties are directly passed in the openlayers object's constructor. If a property value changed during you component lifecycle it trigger a special behavior that delete the openlayers object and create a new one with the upated args property value.
-
-### initial prefix
-
-The initial prefix only applies to classic props. It gives you the ability to set a default value to a prop so it behaves as a uncontrolled input. Here is an example:
-
-```tsx
-import { Map } from "@react-ol/fibe";
-
-function MyMap() {
-  return (
-    <Map style={{ width: "100%", height: "640px" }}>
-      <olView initialCenter={[0, 6000000]} initialZoom={6} />
-      <olLayerTile>
-        <olSourceOSM />
-      </olLayerTile>
-    </Map>
-  );
-}
-```
-
-By using the `initial` prefix here the map won't reset the position and the zoom each time the component `MyMap` is rerendered.
+No. There is no additional overhead. Components participate in a unified renderloop outside of React. It outperforms OpenLayers at scale due to React's scheduling abilities.

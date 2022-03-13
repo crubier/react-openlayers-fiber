@@ -14,7 +14,8 @@
     "nextra": "2.0.0-alpha.34",
     "nextra-theme-docs": "2.0.0-alpha.34",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-use": "17.3.2"
   },
   "devDependencies": {
     "@types/node": "17.0.21",

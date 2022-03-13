@@ -1,0 +1,28 @@
+# Imperative Fallback
+
+The [`ref` prop](/docs/props#ref-prop) allows to access the underlying OpenLayers object imperatively.
+
+For example, to access the `ol.View` OpenLayers object instance, you can use the `<olView ref={viewRef} />` prop:
+
+```tsx
+export const AccessibleMap = () => {
+  const viewRef = useRef();
+  return (
+    <div>
+      <button
+        onClick={() => {
+          viewRef.current?.setZoom(viewRef.current.getZoom() + 1);
+        }}
+      >
+        Zoom in
+      </button>
+      <Map>
+        <olView ref={viewRef} initialCenter={[0, 0]} initialZoom={2} />
+        <olLayerTile>
+          <olSourceOSM />
+        </olLayerTile>
+      </Map>
+    </div>
+  );
+};
+```

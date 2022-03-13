@@ -1,0 +1,45 @@
+# Components
+
+## The `Map` component
+
+The `<Map>` component is the main component, it allows to transition from `react-dom` to the `@react-ol/fiber` rendering realm.
+
+```tsx
+import { Map } from "@react-ol/fiber";
+
+export const Example = () => (
+  <Map style={{ width: "100%", height: "640px" }}>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
+```
+
+## OpenLayers components
+
+All OpenLayers classes are available as React Component through the automatic API.
+
+The naming scheme is using the camel-cased fully qualified names of the classes.
+
+Examples:
+
+| OpenLayers Class                                                                                   | React OpenLayers Fiber component |
+| -------------------------------------------------------------------------------------------------- | -------------------------------- |
+| [`ol/View`](https://openlayers.org/en/latest/apidoc/module-ol_View-View.html)                      | `<olView/>`                      |
+| [`ol/geom/Polygon`](https://openlayers.org/en/latest/apidoc/module-ol_geom_Polygon-Polygon.html)   | `<olGeomPolygon/>`               |
+| [`ol/layer/Heatmap`](https://openlayers.org/en/latest/apidoc/module-ol_layer_Heatmap-Heatmap.html) | `<olLayerHeatmap/>`              |
+
+```tsx
+import { Map } from "@react-ol/fiber";
+
+export const Example = () => (
+  <Map style={{ width: "100%", height: "640px" }}>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
+```
