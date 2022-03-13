@@ -7,5 +7,6 @@
   "draw-and-modify-features": "Draw and Modify Features",
   "draw-shapes": "Draw Shapes",
   "dynamic-data": "Dynamic Data",
-  "geojson": "GeoJSON"
+  "geojson": "GeoJSON",
+  "popup": "Popup"
 }
