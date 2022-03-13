@@ -6,7 +6,7 @@ import React from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
-export const Preload = () => (
+export const ExamplePreload = () => (
   <Map className="rounded-xl overflow-hidden mt-4">
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile preload={Infinity}>
@@ -15,14 +15,14 @@ export const Preload = () => (
   </Map>
 );
 
-<Preload />
+<ExamplePreload />
 
 ```tsx
 import React from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
-export const Preload = () => (
+export const ExamplePreload = () => (
   <Map>
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile preload={Infinity}>

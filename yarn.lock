@@ -412,6 +412,7 @@ __metadata:
     next: 12.1.0
     nextra: 2.0.0-alpha.34
     nextra-theme-docs: 2.0.0-alpha.34
+    ol: 6.13.0
     postcss: 8.4.8
     react: latest
     react-dom: latest

@@ -6,7 +6,7 @@ import React from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
-export const Simple = () => (
+export const ExampleSimple = () => (
   <Map className="rounded-xl overflow-hidden mt-4">
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile>
@@ -15,14 +15,14 @@ export const Simple = () => (
   </Map>
 );
 
-<Simple />
+<ExampleSimple />
 
 ```tsx
 import React from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
-export const Simple = () => (
+export const ExampleSimple = () => (
   <Map>
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile>

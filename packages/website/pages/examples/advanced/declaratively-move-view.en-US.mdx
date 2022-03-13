@@ -8,7 +8,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
 
-export const BasicProps = () => {
+export const ExampleClassicProps = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);
@@ -23,7 +23,7 @@ export const BasicProps = () => {
   );
 };
 
-<BasicProps />
+<ExampleClassicProps />
 
 ```tsx
 import React, { useState } from "react";
@@ -31,7 +31,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
 
-export const BasicProps = () => {
+export const ExampleClassicProps = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);
@@ -50,7 +50,7 @@ export const BasicProps = () => {
 In this second example we provide props and initial props for the view, so it should behave like the Basic Props example values.
 It loads with the initial values and immediatly the position get changed with the position from props
 
-export const BasicBoth = () => {
+export const ExampleInitialProps = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);
@@ -69,10 +69,10 @@ export const BasicBoth = () => {
   );
 };
 
-<BasicBoth />
+<ExampleInitialProps />
 
 ```tsx
-export const BasicBoth = () => {
+export const ExampleInitialProps = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);
