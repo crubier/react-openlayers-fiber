@@ -2,5 +2,6 @@
   "simple": "Simple Map",
   "preload": "Preload Tiles",
   "accessible": "Accessible Map",
-  "bing-maps": "Bing Maps"
+  "bing-maps": "Bing Maps",
+  "cluster": "Clustered Features"
 }
