@@ -2,12 +2,27 @@
 
 See https://openlayers.org/en/latest/examples/preload.html
 
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const Preload = () => (
+  <Map className="rounded-xl overflow-hidden mt-4">
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
+
+<Preload />
+
 ```tsx
 import React from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
-export const Example = () => (
+export const Preload = () => (
   <Map>
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile preload={Infinity}>
@@ -16,18 +31,3 @@ export const Example = () => (
   </Map>
 );
 ```
-
-import React from "react";
-import "ol/ol.css";
-import { Map } from "@react-ol/fiber";
-
-export const Example = () => (
-  <Map className="rounded-xl overflow-hidden">
-    <olView initialCenter={[0, 0]} initialZoom={2} />
-    <olLayerTile preload={Infinity}>
-      <olSourceOSM />
-    </olLayerTile>
-  </Map>
-);
-
-<Example />

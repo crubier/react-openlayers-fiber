@@ -1,5 +1,6 @@
 {
   "simple": "Simple Map",
   "preload": "Preload Tiles",
-  "accessible": "Accessible Map"
+  "accessible": "Accessible Map",
+  "bing-maps": "Bing Maps"
 }

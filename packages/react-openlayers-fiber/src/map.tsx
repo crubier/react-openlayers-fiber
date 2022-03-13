@@ -14,7 +14,7 @@ import { MapProvider } from "./context";
 import { ReactOlFiber } from "./types";
 
 const defaultArgs = [{}] as [ConstructorParameters<typeof OlMap>[0]];
-const defaultStyle = { width: "100%", height: "640px" };
+const defaultStyle = { width: "100%", height: "400px" };
 
 export type Props = ReactOlFiber.IntrinsicElements["olMap"] & {
   style?: React.CSSProperties;

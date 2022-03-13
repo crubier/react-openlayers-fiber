@@ -1,0 +1,106 @@
+# Bing Maps
+
+See https://openlayers.org/en/latest/examples/bing-maps.html
+
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const styles = [
+  "RoadOnDemand",
+  "Aerial",
+  "AerialWithLabelsOnDemand",
+  "CanvasDark",
+  "OrdnanceSurvey",
+];
+
+export const BingMaps = () => {
+  const [currentStyle, setCurrentStyle] = useState(styles[0]);
+  return (
+    <>
+      {/* This example does not work with onBlur */}
+      {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+      <select
+        value={currentStyle}
+        className="mt-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        onChange={(e) => setCurrentStyle(e.target.value)}
+      >
+        {styles.map((style) => (
+          <option key={style} value={style}>
+            {style}
+          </option>
+        ))}
+      </select>
+      <Map className="rounded-xl overflow-hidden mt-4">
+        <olView
+          initialCenter={[-6655.5402445057125, 6709968.258934638]}
+          initialZoom={13}
+        />
+        {styles.map((style) => (
+          <olLayerTile
+            key={style}
+            visible={style === currentStyle}
+            preload={Infinity}
+          >
+            <olSourceBingMaps
+              _key="Akdsy2SFch0llm3vlRegzoCtdZEmgD--98xBIXj83gtJyicWSd9vIeH1Qibj_V3U"
+              imagerySet={style}
+            />
+          </olLayerTile>
+        ))}
+      </Map>
+    </>
+  );
+};
+
+<BingMaps />
+
+```tsx
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const styles = [
+  "RoadOnDemand",
+  "Aerial",
+  "AerialWithLabelsOnDemand",
+  "CanvasDark",
+  "OrdnanceSurvey",
+];
+
+export const BingMaps = () => {
+  const [currentStyle, setCurrentStyle] = useState(styles[0]);
+  return (
+    <>
+      <select
+        value={currentStyle}
+        onChange={(e) => setCurrentStyle(e.target.value)}
+      >
+        {styles.map((style) => (
+          <option key={style} value={style}>
+            {style}
+          </option>
+        ))}
+      </select>
+      <Map>
+        <olView
+          initialCenter={[-6655.5402445057125, 6709968.258934638]}
+          initialZoom={13}
+        />
+        {styles.map((style) => (
+          <olLayerTile
+            key={style}
+            visible={style === currentStyle}
+            preload={Infinity}
+          >
+            <olSourceBingMaps
+              _key="<<<<YOUR_BING_MAPS_KEY_HERE>>>>"
+              imagerySet={style}
+            />
+          </olLayerTile>
+        ))}
+      </Map>
+    </>
+  );
+};
+```

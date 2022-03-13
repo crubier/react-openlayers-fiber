@@ -2,6 +2,42 @@
 
 See https://openlayers.org/en/latest/examples/accessible.html
 
+import React, { useRef } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const AccessibleMap = () => {
+  const viewRef = useRef();
+  return (
+    <div>
+      <button
+        className="inline-flex items-center mt-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+        onClick={() => {
+          viewRef.current?.setZoom(viewRef.current.getZoom() - 1);
+        }}
+      >
+        Zoom out
+      </button>
+      <button
+        className="inline-flex items-center mt-4 ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        onClick={() => {
+          viewRef.current?.setZoom(viewRef.current.getZoom() + 1);
+        }}
+      >
+        Zoom in
+      </button>
+      <Map className="rounded-xl overflow-hidden mt-4">
+        <olView ref={viewRef} initialCenter={[0, 0]} initialZoom={2} />
+        <olLayerTile>
+          <olSourceOSM />
+        </olLayerTile>
+      </Map>
+    </div>
+  );
+};
+
+<AccessibleMap />
+
 ```tsx
 import React, { useRef } from "react";
 import "ol/ol.css";
@@ -35,40 +71,3 @@ export const AccessibleMap = () => {
   );
 };
 ```
-
-import React, { useRef } from "react";
-import "ol/ol.css";
-import { Map } from "@react-ol/fiber";
-
-export const AccessibleMap = () => {
-  const viewRef = useRef();
-  return (
-    <div>
-      <button
-        className="inline-flex items-center m-4 ml-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        onClick={() => {
-          viewRef.current?.setZoom(viewRef.current.getZoom() - 1);
-        }}
-      >
-        Zoom out
-      </button>
-      <button
-        className="inline-flex items-center m-4 ml-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-        onClick={() => {
-          viewRef.current?.setZoom(viewRef.current.getZoom() + 1);
-        }}
-      >
-        Zoom in
-      </button>
-      <Map className="rounded-xl overflow-hidden">
-        <olView ref={viewRef} initialCenter={[0, 0]} initialZoom={2} />
-        <olLayerTile>
-          <olSourceOSM />
-        </olLayerTile>
-      </Map>
-    </div>
-
-);
-};
-
-<AccessibleMap />
