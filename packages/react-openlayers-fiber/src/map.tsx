@@ -1,7 +1,7 @@
 import React, {
   MutableRefObject,
   useRef,
-  useLayoutEffect,
+  useEffect,
   useState,
   forwardRef,
 } from "react";
@@ -27,6 +27,7 @@ export const Map = forwardRef<OlMap, Props>(
       children,
       args = defaultArgs,
       style = defaultStyle,
+      className,
       containerRef,
       ...mapProps
     }: Props,
@@ -35,7 +36,7 @@ export const Map = forwardRef<OlMap, Props>(
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<OlMap | null>(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (mapContainerRef.current) {
         const wrapped = (
           <olMap
@@ -75,6 +76,6 @@ export const Map = forwardRef<OlMap, Props>(
       }
     };
 
-    return <div style={style} ref={setRef} />;
+    return <div style={style} className={className} ref={setRef} />;
   }
 );

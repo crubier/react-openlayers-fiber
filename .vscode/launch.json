@@ -9,13 +9,9 @@
       "disableOptimisticBPs": true,
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "yarn",
-      "args": [
-        "test",
-        "--runInBand",
-        "--watchAll=false"
-      ],
+      "args": ["test", "--runInBand", "--watchAll=false"],
       "outFiles": [
-        "${workspaceFolder}/typescript/*/src/**/*.ts?(x)",
+        "${workspaceFolder}/packages/*/src/**/*.ts?(x)",
         "!**/node_modules/**"
       ]
     }

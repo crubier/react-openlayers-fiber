@@ -8,7 +8,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
 export const Example = () => (
-  <Map style={{ width: "100%", height: "640px" }}>
+  <Map>
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile>
       <olSourceOSM />
@@ -22,7 +22,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 
 export const Example = () => (
-  <Map style={{ width: "100%", height: "640px" }}>
+  <Map className="rounded-xl overflow-hidden">
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile>
       <olSourceOSM />

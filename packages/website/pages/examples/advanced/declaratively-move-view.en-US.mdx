@@ -1,0 +1,93 @@
+# Declaratively Move View
+
+In this story we only provide props for the view, so it should load with default values
+and go a bit north every second, forcing the view to recenter every second
+
+```tsx
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { useInterval } from "react-use";
+
+export const BasicProps = () => {
+  const [latitude, setLatitude] = useState(6000000);
+  useInterval(() => {
+    setLatitude(latitude + 10000);
+  }, 1000);
+  return (
+    <Map>
+      <olView center={[0, latitude]} zoom={6} />
+      <olLayerTile>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+```
+
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { useInterval } from "react-use";
+
+export const BasicProps = () => {
+  const [latitude, setLatitude] = useState(6000000);
+  useInterval(() => {
+    setLatitude(latitude + 10000);
+  }, 1000);
+  return (
+    <Map className="rounded-xl overflow-hidden">
+      <olView center={[0, latitude]} zoom={6} />
+      <olLayerTile>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<BasicProps />
+
+In this story we provide props and initial props for the view, so it should behave like the Basic Props example values.
+It loads with the initial values and immediatly the position get changed with the position from props
+
+```tsx
+export const BasicBoth = () => {
+  const [latitude, setLatitude] = useState(6000000);
+  useInterval(() => {
+    setLatitude(latitude + 10000);
+  }, 1000);
+  return (
+    <Map>
+      <olView
+        initialCenter={[0, 6000000]}
+        initialZoom={6}
+        center={[0, latitude]}
+      />
+      <olLayerTile>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+```
+
+export const BasicBoth = () => {
+  const [latitude, setLatitude] = useState(6000000);
+  useInterval(() => {
+    setLatitude(latitude + 10000);
+  }, 1000);
+  return (
+    <Map className="rounded-xl overflow-hidden">
+      <olView
+        initialCenter={[0, 6000000]}
+        initialZoom={6}
+        center={[0, latitude]}
+      />
+      <olLayerTile>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<BasicBoth />

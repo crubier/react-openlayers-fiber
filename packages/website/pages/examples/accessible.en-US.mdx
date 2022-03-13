@@ -60,7 +60,7 @@ export const AccessibleMap = () => {
       >
         Zoom in
       </button>
-      <Map>
+      <Map className="rounded-xl overflow-hidden">
         <olView ref={viewRef} initialCenter={[0, 0]} initialZoom={2} />
         <olLayerTile>
           <olSourceOSM />
