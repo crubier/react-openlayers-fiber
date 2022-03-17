@@ -38,5 +38,36 @@ export const ExampleStaticImage = () => (
 <ExampleStaticImage />
 
 ```tsx
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { getCenter } from "ol/extent";
+import Projection from "ol/proj/Projection";
 
+export const extent = [0, 0, 1024, 968];
+export const attributions = '© <a href="http://xkcd.com/license.html">xkcd</a>';
+export const projection = new Projection({
+  code: "xkcd-image",
+  units: "pixels",
+  extent,
+});
+
+export const ExampleStaticImage = () => (
+  <Map>
+    <olView
+      initialCenter={getCenter(extent)}
+      initialZoom={2}
+      maxZoom={8}
+      initialProjection={projection}
+    />
+    <olLayerImage>
+      <olSourceImageStatic
+        initialProjection={projection}
+        initialUrl="https://imgs.xkcd.com/comics/online_communities.png"
+        attributions={attributions}
+        imageExtent={extent}
+      />
+    </olLayerImage>
+  </Map>
+);
 ```

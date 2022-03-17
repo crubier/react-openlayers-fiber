@@ -10,6 +10,7 @@
   "preload": "Preload Tiles",
   "simple": "Simple Map",
   "static-image": "Static Image",
+  "turf": "turf.js",
   "wms-tiled": "Tiled WMS",
   "xyz-retina": "XYZ Retina Tiles",
   "xyz": "XYZ",
