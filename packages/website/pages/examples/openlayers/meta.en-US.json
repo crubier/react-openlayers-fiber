@@ -1,0 +1,14 @@
+{
+  "simple": "Simple Map",
+  "preload": "Preload Tiles",
+  "accessible": "Accessible Map",
+  "bing-maps": "Bing Maps",
+  "cluster": "Clustered Features",
+  "draw-and-modify-features": "Draw and Modify Features",
+  "draw-shapes": "Draw Shapes",
+  "dynamic-data": "Dynamic Data",
+  "geojson": "GeoJSON",
+  "popup": "Popup",
+  "wms-tiled": "Tiled WMS",
+  "zoomify": "Zoomify"
+}

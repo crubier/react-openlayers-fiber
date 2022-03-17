@@ -33,7 +33,7 @@ const nextConfig = withNextra({
       },
       {
         source: "/examples",
-        destination: "/examples/basic",
+        destination: "/examples/openlayers/simple",
         statusCode: 302,
       },
     ]
