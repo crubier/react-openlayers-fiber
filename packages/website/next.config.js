@@ -32,6 +32,11 @@ const nextConfig = withNextra({
         statusCode: 302,
       },
       {
+        source: "/examples/openlayers",
+        destination: "/examples/openlayers/simple",
+        statusCode: 302,
+      },
+      {
         source: "/examples",
         destination: "/examples/openlayers/simple",
         statusCode: 302,

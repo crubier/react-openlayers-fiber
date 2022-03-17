@@ -1,6 +1,4 @@
 {
-  "simple": "Simple Map",
-  "preload": "Preload Tiles",
   "accessible": "Accessible Map",
   "bing-maps": "Bing Maps",
   "cluster": "Clustered Features",
@@ -9,8 +7,11 @@
   "dynamic-data": "Dynamic Data",
   "geojson": "GeoJSON",
   "popup": "Popup",
+  "preload": "Preload Tiles",
+  "simple": "Simple Map",
+  "static-image": "Static Image",
   "wms-tiled": "Tiled WMS",
-  "zoomify": "Zoomify",
   "xyz-retina": "XYZ Retina Tiles",
-  "xyz": "XYZ"
+  "xyz": "XYZ",
+  "zoomify": "Zoomify"
 }
