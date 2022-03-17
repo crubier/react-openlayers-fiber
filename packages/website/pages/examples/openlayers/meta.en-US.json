@@ -11,5 +11,6 @@
   "popup": "Popup",
   "wms-tiled": "Tiled WMS",
   "zoomify": "Zoomify",
-  "xyz-retina": "XYZ Retina Tiles"
+  "xyz-retina": "XYZ Retina Tiles",
+  "xyz": "XYZ"
 }

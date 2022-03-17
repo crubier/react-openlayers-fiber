@@ -1,0 +1,51 @@
+# XYZ
+
+See https://openlayers.org/en/latest/examples/xyz.html
+
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleXYZ = () => {
+  const key = process.env.NEXT_PUBLIC_THUNDERFOREST_KEY;
+  return (
+    <Map className="rounded-xl overflow-hidden mt-4">
+      <olView initialCenter={[-472202, 7530279]} initialZoom={12} />
+      <olLayerTile>
+        <olSourceXYZ
+          url={
+            "https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png" +
+            "?apikey=" +
+            key
+          }
+        />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<ExampleXYZ />
+
+```tsx
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleXYZ = () => {
+  const key = process.env.NEXT_PUBLIC_THUNDERFOREST_KEY;
+  return (
+    <Map>
+      <olView initialCenter={[-472202, 7530279]} initialZoom={12} />
+      <olLayerTile>
+        <olSourceXYZ
+          url={
+            "https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png" +
+            "?apikey=" +
+            key
+          }
+        />
+      </olLayerTile>
+    </Map>
+  );
+};
+```
