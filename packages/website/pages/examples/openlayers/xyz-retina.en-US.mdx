@@ -1,0 +1,77 @@
+# XYZ Retina Tiles
+
+See https://openlayers.org/en/latest/examples/xyz-retina.html
+
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { transform } from "ol/proj";
+
+export const ExampleXYZRetina = () => {
+  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+  const attributions =
+    '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+    '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+  return (
+    <Map className="rounded-xl overflow-hidden mt-4">
+      <olView
+        initialProjection="EPSG:3857"
+        initialCenter={transform(
+          [-112.18688965, 36.057944835],
+          "EPSG:4326",
+          "EPSG:3857"
+        )}
+        initialZoom={12}
+      />
+      <olLayerTile preload={3}>
+        <olSourceXYZ
+          tilePixelRatio={2}
+          attributions={attributions}
+          url={
+            "https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=" +
+            key
+          }
+        />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<ExampleXYZRetina />
+
+```tsx
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { transform } from "ol/proj";
+
+export const ExampleXYZRetina = () => {
+  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+  const attributions =
+    '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+    '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+  return (
+    <Map>
+      <olView
+        initialProjection="EPSG:3857"
+        initialCenter={transform(
+          [-112.18688965, 36.057944835],
+          "EPSG:4326",
+          "EPSG:3857"
+        )}
+        initialZoom={12}
+      />
+      <olLayerTile preload={3}>
+        <olSourceXYZ
+          tilePixelRatio={2}
+          attributions={attributions}
+          url={
+            "https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=" +
+            key
+          }
+        />
+      </olLayerTile>
+    </Map>
+  );
+};
+```

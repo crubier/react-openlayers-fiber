@@ -43,7 +43,7 @@ export const ExampleBingMaps = () => {
             preload={Infinity}
           >
             <olSourceBingMaps
-              _key="Akdsy2SFch0llm3vlRegzoCtdZEmgD--98xBIXj83gtJyicWSd9vIeH1Qibj_V3U"
+              _key={process.env.NEXT_PUBLIC_BINGMAPS_KEY}
               imagerySet={style}
             />
           </olLayerTile>

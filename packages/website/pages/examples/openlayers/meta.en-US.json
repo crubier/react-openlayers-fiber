@@ -10,5 +10,6 @@
   "geojson": "GeoJSON",
   "popup": "Popup",
   "wms-tiled": "Tiled WMS",
-  "zoomify": "Zoomify"
+  "zoomify": "Zoomify",
+  "xyz-retina": "XYZ Retina Tiles"
 }
