@@ -1,6 +1,6 @@
 export default {
   projectLink: 'https://github.com/crubier/react-openlayers-fiber', // GitHub link in the navbar
-  docsRepositoryBase: 'https://github.com/crubier/react-openlayers-fiber/blob/master/packages/website', // base URL for the docs repository
+  docsRepositoryBase: 'https://github.com/crubier/react-openlayers-fiber/blob/master/packages/website/pages', // base URL for the docs repository
   titleSuffix: ' – React Openlayers Fiber',
   nextLinks: true,
   prevLinks: true,
