@@ -1,4 +1,4 @@
-# Declaratively Move View
+# Declaratively move view
 
 In this example we only provide props for the view, so it should load with default values
 and go a bit north every second, forcing the view to recenter every second
@@ -8,7 +8,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
 
-export const ExampleClassicProps = () => {
+export const ExampleDeclarativelyMoveView = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);
@@ -23,7 +23,7 @@ export const ExampleClassicProps = () => {
   );
 };
 
-<ExampleClassicProps />
+<ExampleDeclarativelyMoveView />
 
 ```tsx
 import React, { useState } from "react";
@@ -31,7 +31,7 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
 
-export const ExampleClassicProps = () => {
+export const ExampleDeclarativelyMoveView = () => {
   const [latitude, setLatitude] = useState(6000000);
   useInterval(() => {
     setLatitude(latitude + 10000);

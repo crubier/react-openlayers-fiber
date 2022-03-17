@@ -7,11 +7,12 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { transform } from "ol/proj";
 
+export const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+export const attributions =
+  '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+  '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+
 export const ExampleXYZRetina = () => {
-  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
-  const attributions =
-    '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
-    '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
   return (
     <Map className="rounded-xl overflow-hidden mt-4">
       <olView
@@ -45,11 +46,12 @@ import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { transform } from "ol/proj";
 
+export const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+export const attributions =
+  '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+  '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+
 export const ExampleXYZRetina = () => {
-  const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
-  const attributions =
-    '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
-    '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
   return (
     <Map>
       <olView
