@@ -8,5 +8,7 @@
   "draw-shapes": "Draw Shapes",
   "dynamic-data": "Dynamic Data",
   "geojson": "GeoJSON",
-  "popup": "Popup"
+  "popup": "Popup",
+  "wms-tiled": "Tiled WMS",
+  "zoomify": "Zoomify"
 }

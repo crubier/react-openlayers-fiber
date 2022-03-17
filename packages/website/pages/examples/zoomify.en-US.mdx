@@ -1,0 +1,108 @@
+# Zoomify
+
+See https://openlayers.org/en/latest/examples/zoomify.html
+
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleZoomify = () => {
+  const [imgWidth, imgHeight] = [4000, 3000];
+  const zoomifyUrl = "https://ol-zoomify.surge.sh/zoomify/";
+  const [pixelRatio, setPixelRatio] = useState("1");
+  return (
+    <>
+      <form>
+        <label htmlFor="type">Resolution:</label>
+        <select
+          id="type"
+          className="mt-4 block w-full pl-3 pr-10 py-2 text-base dark:text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+          value={pixelRatio}
+          onChange={(e) => setPixelRatio(e.target.value)}
+        >
+          <option value={"1"}>Normal</option>
+          <option value={"2"}>Retina</option>
+        </select>
+      </form>
+      <Map className="rounded-xl overflow-hidden mt-4">
+        <olView
+          initialCenter={[imgWidth / 2, -imgHeight / 2]}
+          initialZoom={4}
+          args={{
+            extent: [0, -imgHeight, imgWidth, 0],
+            constrainOnlyCenter: true,
+            maxResolution: 80,
+            minResolution: 0.05,
+          }}
+        />
+        <olLayerTile preload={3}>
+          {/* We have to use the constructor of the object Zoomify because the setUrl method does not do this special behavior: https://github.com/openlayers/openlayers/blob/f3a67e818289282ac71b6d13df96434dd44ace61/src/ol/source/Zoomify.js#L201 */}
+          <olSourceZoomify
+            args={{
+              url: zoomifyUrl,
+              size: [imgWidth, imgHeight],
+              crossOrigin: "anonymous",
+              zDirection: -1,
+              tilePixelRatio: pixelRatio,
+              tileSize: 256 / pixelRatio,
+            }}
+          />
+        </olLayerTile>
+      </Map>
+    </>
+  );
+};
+
+<ExampleZoomify />
+
+```tsx
+import React, { useState } from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleZoomify = () => {
+  const [imgWidth, imgHeight] = [4000, 3000];
+  const zoomifyUrl = "https://ol-zoomify.surge.sh/zoomify/";
+  const [pixelRatio, setPixelRatio] = useState("1");
+  return (
+    <>
+      <form>
+        <label htmlFor="type">Resolution:</label>
+        <select
+          id="type"
+          value={pixelRatio}
+          onChange={(e) => setPixelRatio(e.target.value)}
+        >
+          <option value={"1"}>Normal</option>
+          <option value={"2"}>Retina</option>
+        </select>
+      </form>
+      <Map>
+        <olView
+          initialCenter={[imgWidth / 2, -imgHeight / 2]}
+          initialZoom={4}
+          args={{
+            extent: [0, -imgHeight, imgWidth, 0],
+            constrainOnlyCenter: true,
+            maxResolution: 80,
+            minResolution: 0.05,
+          }}
+        />
+        <olLayerTile preload={3}>
+          {/* We have to use the constructor of the object Zoomify because the setUrl method does not do this special behavior: https://github.com/openlayers/openlayers/blob/f3a67e818289282ac71b6d13df96434dd44ace61/src/ol/source/Zoomify.js#L201 */}
+          <olSourceZoomify
+            args={{
+              url: zoomifyUrl,
+              size: [imgWidth, imgHeight],
+              crossOrigin: "anonymous",
+              zDirection: -1,
+              tilePixelRatio: pixelRatio,
+              tileSize: 256 / pixelRatio,
+            }}
+          />
+        </olLayerTile>
+      </Map>
+    </>
+  );
+};
+```
