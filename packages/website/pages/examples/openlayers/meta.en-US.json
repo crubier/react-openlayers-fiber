@@ -6,6 +6,7 @@
   "draw-shapes": "Draw Shapes",
   "dynamic-data": "Dynamic Data",
   "geojson": "GeoJSON",
+  "mapbox-vector-tiles": "Mapbox Vector Tiles",
   "popup": "Popup",
   "preload": "Preload Tiles",
   "simple": "Simple Map",
