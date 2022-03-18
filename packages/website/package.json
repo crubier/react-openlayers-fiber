@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-ol/fiber": "workspace:*",
     "@tailwindcss/forms": "0.5.0",
+    "@turf/turf": "6.5.0",
     "next": "12.1.0",
     "nextra": "2.0.0-alpha.34",
     "nextra-theme-docs": "2.0.0-alpha.34",
