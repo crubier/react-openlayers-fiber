@@ -1,0 +1,209 @@
+# Select Features
+
+See https://openlayers.org/en/latest/examples/select-features.html
+
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import "ol/ol.css";
+import GeoJSON from "ol/format/GeoJSON";
+import { click, pointerMove, altKeyOnly } from "ol/events/condition";
+import { Fill, Stroke, Style } from "ol/style";
+import { Map } from "@react-ol/fiber";
+
+export const format = new GeoJSON();
+
+export const style = new Style({
+  fill: new Fill({
+    color: "#eeeeee",
+  }),
+});
+
+export const selectedStyle = new Style({
+  fill: new Fill({
+    color: "#eeeeee",
+  }),
+  stroke: new Stroke({
+    color: "rgba(255, 255, 255, 0.7)",
+    width: 2,
+  }),
+});
+
+export const styleFunction = (feature) => {
+  const color = feature.get("COLOR") || "#eeeeee";
+  style.getFill().setColor(color);
+  return style;
+};
+
+export const selectedStyleFunction = (feature) => {
+  const color = feature.get("COLOR") || "#eeeeee";
+  selectedStyle.getFill().setColor(color);
+  return selectedStyle;
+};
+
+export const ExampleSelectFeatures = () => {
+  const [displayText, setDisplayText] = useState("0 selected features");
+  const [selectMethod, setSelectMethod] = useState("singleClick");
+  const handleSelect = useCallback((e) => {
+    setDisplayText(
+      ` ${e.target
+        .getFeatures()
+        .getLength()} selected features (last operation selected ${
+        e.selected.length
+      } and deselected  ${e.deselected.length} features)`
+    );
+  }, []);
+  const selectCondition = useMemo(() => {
+    switch (selectMethod) {
+      case "singleClick":
+        return click;
+      case "pointerMove":
+        return pointerMove;
+      case "altClick":
+        return (mapBrowserEvent) => {
+          return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent);
+        };
+      default:
+        return () => false;
+    }
+  }, [selectMethod]);
+  return (
+    <>
+      <form className="form-inline">
+        <label htmlFor="type">Action type &nbsp;</label>
+        <select
+          id="type"
+          onChange={(e) => setSelectMethod(e.target.value)}
+          className="mt-4 block w-full pl-3 pr-10 py-2 text-base dark:text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="click" selected>
+            Click
+          </option>
+          <option value="singleClick">Single-click</option>
+          <option value="pointerMove">Hover</option>
+          <option value="altClick">Alt+Click</option>
+          <option value="none">None</option>
+        </select>
+        <span>{displayText}</span>
+      </form>
+      <Map className="rounded-xl overflow-hidden mt-4">
+        <olView initialCenter={[0, 0]} initialZoom={2} />
+        <olLayerTile>
+          <olSourceOSM />
+        </olLayerTile>
+        <olLayerVector background="white" style={styleFunction}>
+          <olSourceVector
+            url="https://openlayers.org/data/vector/ecoregions.json"
+            format={format}
+          />
+        </olLayerVector>
+        <olInteractionSelect
+          args={{ condition: selectCondition }}
+          style={selectedStyleFunction}
+          onSelect={handleSelect}
+        />
+      </Map>
+    </>
+  );
+};
+
+<ExampleSelectFeatures />
+
+```tsx
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import "ol/ol.css";
+import GeoJSON from "ol/format/GeoJSON";
+import { click, pointerMove, altKeyOnly } from "ol/events/condition";
+import { Fill, Stroke, Style } from "ol/style";
+import { Map } from "@react-ol/fiber";
+
+export const format = new GeoJSON();
+
+export const style = new Style({
+  fill: new Fill({
+    color: "#eeeeee",
+  }),
+});
+
+export const selectedStyle = new Style({
+  fill: new Fill({
+    color: "#eeeeee",
+  }),
+  stroke: new Stroke({
+    color: "rgba(255, 255, 255, 0.7)",
+    width: 2,
+  }),
+});
+
+export const styleFunction = (feature) => {
+  const color = feature.get("COLOR") || "#eeeeee";
+  style.getFill().setColor(color);
+  return style;
+};
+
+export const selectedStyleFunction = (feature) => {
+  const color = feature.get("COLOR") || "#eeeeee";
+  selectedStyle.getFill().setColor(color);
+  return selectedStyle;
+};
+
+export const ExampleSelectFeatures = () => {
+  const [displayText, setDisplayText] = useState("0 selected features");
+  const [selectMethod, setSelectMethod] = useState("singleClick");
+  const handleSelect = useCallback((e) => {
+    setDisplayText(
+      ` ${e.target
+        .getFeatures()
+        .getLength()} selected features (last operation selected ${
+        e.selected.length
+      } and deselected  ${e.deselected.length} features)`
+    );
+  }, []);
+  const selectCondition = useMemo(() => {
+    switch (selectMethod) {
+      case "singleClick":
+        return click;
+      case "pointerMove":
+        return pointerMove;
+      case "altClick":
+        return (mapBrowserEvent) => {
+          return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent);
+        };
+      default:
+        return () => false;
+    }
+  }, [selectMethod]);
+  return (
+    <>
+      <form className="form-inline">
+        <label htmlFor="type">Action type &nbsp;</label>
+        <select id="type" onChange={(e) => setSelectMethod(e.target.value)}>
+          <option value="click" selected>
+            Click
+          </option>
+          <option value="singleClick">Single-click</option>
+          <option value="pointerMove">Hover</option>
+          <option value="altClick">Alt+Click</option>
+          <option value="none">None</option>
+        </select>
+        <span>{displayText}</span>
+      </form>
+      <Map>
+        <olView initialCenter={[0, 0]} initialZoom={2} />
+        <olLayerTile>
+          <olSourceOSM />
+        </olLayerTile>
+        <olLayerVector background="white" style={styleFunction}>
+          <olSourceVector
+            url="https://openlayers.org/data/vector/ecoregions.json"
+            format={format}
+          />
+        </olLayerVector>
+        <olInteractionSelect
+          args={{ condition: selectCondition }}
+          style={selectedStyleFunction}
+          onSelect={handleSelect}
+        />
+      </Map>
+    </>
+  );
+};
+```

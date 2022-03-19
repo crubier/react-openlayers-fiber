@@ -9,6 +9,7 @@
   "mapbox-vector-tiles": "Mapbox Vector Tiles",
   "popup": "Popup",
   "preload": "Preload Tiles",
+  "select-features": "Select Features",
   "simple": "Simple Map",
   "static-image": "Static Image",
   "turf": "turf.js",
