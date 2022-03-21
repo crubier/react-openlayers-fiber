@@ -244,13 +244,9 @@ import olms from "ol-mapbox-style";
 import { defaultResolutions } from "ol-mapbox-style/dist/util";
 
 export const key = process.env.NEXT_PUBLIC_MAPBOX_KEY;
-
 export const format = new MVT();
 export const attributions =
-  '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
-  '© <a href="https://www.openstreetmap.org/copyright">' +
-  "OpenStreetMap contributors</a>";
-
+  '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright"> OpenStreetMap contributors</a>';
 export const style = createMapboxStreetsV6Style(
   Style,
   Fill,
@@ -264,15 +260,9 @@ export const ExampleMapboxVectorTiles = () => (
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerVectorTile declutter style={style}>
       <olSourceVectorTile
-        args={{
-          attributions,
-          format,
-        }}
-        url={
-          "https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/" +
-          "{z}/{x}/{y}.vector.pbf?access_token=" +
-          key
-        }
+        attributions={attributions}
+        format={format}
+        url={`https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=${key}`}
       />
     </olLayerVectorTile>
   </Map>
@@ -289,18 +279,14 @@ import { Fill, Icon, Stroke, Style, Text } from "ol/style";
 import olms from "ol-mapbox-style";
 import { defaultResolutions } from "ol-mapbox-style/dist/util";
 
-export const key = process.env.NEXT_PUBLIC_MAPBOX_KEY;
-
-export const format = new MVT();
-export const attributions =
-  '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
-  '© <a href="https://www.openstreetmap.org/copyright">' +
-  "OpenStreetMap contributors</a>";
-
 export function createMapboxStreetsV6Style(e, t, o, a, r) {
   // ...
 }
 
+export const key = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+export const format = new MVT();
+export const attributions =
+  '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright"> OpenStreetMap contributors</a>';
 export const style = createMapboxStreetsV6Style(
   Style,
   Fill,
@@ -314,15 +300,9 @@ export const ExampleMapboxVectorTiles = () => (
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerVectorTile declutter style={style}>
       <olSourceVectorTile
-        args={{
-          attributions,
-          format,
-        }}
-        url={
-          "https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/" +
-          "{z}/{x}/{y}.vector.pbf?access_token=" +
-          key
-        }
+        attributions={attributions}
+        format={format}
+        url={`https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=${key}`}
       />
     </olLayerVectorTile>
   </Map>
