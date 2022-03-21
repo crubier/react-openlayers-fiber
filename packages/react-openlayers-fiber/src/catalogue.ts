@@ -6,7 +6,6 @@
 import {
   upperFirst,
   lowerFirst,
-  // isObject,
   omit,
   fromPairs,
   toPairs,
