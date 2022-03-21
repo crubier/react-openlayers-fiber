@@ -1,0 +1,168 @@
+# Icon Symbolizer
+
+See https://openlayers.org/en/latest/examples/icon.html
+
+import React, { useState } from "react";
+import OverlayPositioning from "ol/OverlayPositioning";
+import IconAnchorUnits from "ol/style/IconAnchorUnits";
+import { Point } from "ol/geom";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleIcon = () => {
+  const [coordinates, setCoordinates] = useState(undefined);
+  const [map, setMap] = useState(null);
+  const [popup, setPopup] = useState(null);
+  const onClick = (evt) => {
+    if (!map) return;
+    const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+    if (feature) {
+      const coordinate = feature.getGeometry().getCoordinates();
+      setCoordinates(coordinate);
+    } else {
+      setCoordinates(undefined);
+    }
+  };
+  const onPointermove = (e) => {
+    if (!map) return;
+    const pixel = map.getEventPixel(e.originalEvent);
+    const hit = map.hasFeatureAtPixel(pixel);
+    map.getTarget().style.cursor = hit ? "pointer" : "";
+  };
+  return (
+    <div>
+      <div ref={setPopup}>
+        <div className="px-4 py-2 rounded-lg border border-gray-500 bg-white">
+          <p>Null Island</p>
+        </div>
+      </div>
+      <Map
+        className="rounded-xl overflow-hidden mt-4"
+        ref={setMap}
+        onPointermove={onPointermove}
+        onClick={onClick}
+      >
+        {popup ? (
+          <olOverlay
+            offset={[0, -30]}
+            position={coordinates}
+            positioning={OverlayPositioning.BOTTOM_CENTER}
+            element={popup}
+            args={{
+              stopEvent: false,
+            }}
+          />
+        ) : null}
+        <olView initialCenter={[0, 0]} initialZoom={3} />
+        <olLayerTile>
+          <olSourceTileJSON
+            args={{
+              url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure=1",
+              crossOrigin: "anonymous",
+            }}
+          />
+        </olLayerTile>
+        <olLayerVector>
+          <olSourceVector>
+            <olFeature>
+              <olStyleStyle attach="style">
+                <olStyleIcon
+                  attach="image"
+                  args={{
+                    anchor: [0.5, 46],
+                    anchorXUnits: IconAnchorUnits.FRACTION,
+                    anchorYUnits: IconAnchorUnits.PIXELS,
+                    src: "/icon.png",
+                  }}
+                />
+              </olStyleStyle>
+              <olGeomPoint coordinates={[0, 0]} />
+            </olFeature>
+          </olSourceVector>
+        </olLayerVector>
+      </Map>
+    </div>
+  );
+};
+
+<ExampleIcon />
+
+```tsx
+import React, { useState } from "react";
+import OverlayPositioning from "ol/OverlayPositioning";
+import IconAnchorUnits from "ol/style/IconAnchorUnits";
+import { Point } from "ol/geom";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleIcon = () => {
+  const [coordinates, setCoordinates] = useState(undefined);
+  const [map, setMap] = useState(null);
+  const [popup, setPopup] = useState(null);
+  const onClick = (evt) => {
+    if (!map) return;
+    const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+    if (feature) {
+      const coordinate = feature.getGeometry().getCoordinates();
+      setCoordinates(coordinate);
+    } else {
+      setCoordinates(undefined);
+    }
+  };
+  const onPointermove = (e) => {
+    if (!map) return;
+    const pixel = map.getEventPixel(e.originalEvent);
+    const hit = map.hasFeatureAtPixel(pixel);
+    map.getTarget().style.cursor = hit ? "pointer" : "";
+  };
+  return (
+    <div>
+      <div ref={setPopup}>
+        <div>
+          <p>Null Island</p>
+        </div>
+      </div>
+      <Map ref={setMap} onPointermove={onPointermove} onClick={onClick}>
+        {popup ? (
+          <olOverlay
+            offset={[0, -30]}
+            position={coordinates}
+            positioning={OverlayPositioning.BOTTOM_CENTER}
+            element={popup}
+            args={{
+              stopEvent: false,
+            }}
+          />
+        ) : null}
+        <olView initialCenter={[0, 0]} initialZoom={3} />
+        <olLayerTile>
+          <olSourceTileJSON
+            args={{
+              url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure=1",
+              crossOrigin: "anonymous",
+            }}
+          />
+        </olLayerTile>
+        <olLayerVector>
+          <olSourceVector>
+            <olFeature>
+              <olStyleStyle attach="style">
+                <olStyleIcon
+                  attach="image"
+                  args={{
+                    anchor: [0.5, 46],
+                    anchorXUnits: IconAnchorUnits.FRACTION,
+                    anchorYUnits: IconAnchorUnits.PIXELS,
+                    src: "/icon.png",
+                  }}
+                />
+              </olStyleStyle>
+              <olGeomPoint coordinates={[0, 0]} />
+            </olFeature>
+          </olSourceVector>
+        </olLayerVector>
+      </Map>
+    </div>
+  );
+};
+```
