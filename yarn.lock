@@ -415,6 +415,7 @@ __metadata:
     nextra-theme-docs: 2.0.0-alpha.34
     ol: 6.13.0
     postcss: 8.4.8
+    proj4: 2.8.0
     react: latest
     react-dom: latest
     react-use: 17.3.2
@@ -7836,6 +7837,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proj4@npm:2.8.0":
+  version: 2.8.0
+  resolution: "proj4@npm:2.8.0"
+  dependencies:
+    mgrs: 1.0.0
+    wkt-parser: ^1.3.1
+  checksum: 05c46387ac866bba699d50291507f9cfd2eece4806e375e7bc536c28c03af4d4ae8c386ab53a0c4a26a4b1718d5d0b30a6cf972614f4fb997e89bd262348c6b1
+  languageName: node
+  linkType: hard
+
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1
   resolution: "promise-inflight@npm:1.0.1"
@@ -9558,6 +9569,13 @@ typescript@4.3.5:
   version: 1.2.4
   resolution: "wkt-parser@npm:1.2.4"
   checksum: 2d8bbaa86b2ff4806a9f881c15bfc422345fb637a4259d2a4b743582a8680c4fa50262dd84b2b782879c4a8a3408a381a8da1219d9ff69b1108075954afd8a4a
+  languageName: node
+  linkType: hard
+
+"wkt-parser@npm:^1.3.1":
+  version: 1.3.2
+  resolution: "wkt-parser@npm:1.3.2"
+  checksum: 35318a7fb3ef848b9bc9b29fa58d9b9371f8e47354f2a1325cfc9968b1b390334804a963751a5daeaf7d421b735fd85d3fe34d73a44ba2432e1ee5932c87d269
   languageName: node
   linkType: hard
 

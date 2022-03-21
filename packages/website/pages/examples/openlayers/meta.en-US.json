@@ -11,6 +11,8 @@
   "mapbox-vector-tiles": "Mapbox Vector Tiles",
   "popup": "Popup",
   "preload": "Preload Tiles",
+  "reprojection-image": "Image Reprojection",
+  "reprojection-wgs84": "OpenStreetMap Reprojection",
   "select-features": "Select Features",
   "simple": "Simple Map",
   "static-image": "Static Image",

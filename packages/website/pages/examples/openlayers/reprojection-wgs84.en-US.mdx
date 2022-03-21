@@ -1,0 +1,26 @@
+# OpenStreetMap Reprojection
+
+See hhttps://openlayers.org/en/latest/examples/reprojection-wgs84.html
+
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleReprojectionWGS84 = () => (
+  <Map>
+    <olView
+      initialCenter={[0, 0]}
+      initialZoom={2}
+      initialProjection="EPSG:4326"
+    />
+    <olLayerTile>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
+
+<ExampleReprojectionWGS84 />
+
+```tsx
+
+```
