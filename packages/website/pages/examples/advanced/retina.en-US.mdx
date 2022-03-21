@@ -1,0 +1,43 @@
+# Retina
+
+This example shows how to use display maps that looks good on retina screens
+
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleRetina = () => (
+  <Map className="rounded-xl overflow-hidden mt-4">
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={4}>
+      <olSourceXYZ
+        url="https://tile.osmand.net/hd/{z}/{x}/{y}.png"
+        crossOrigin={null}
+        maxZoom={19}
+        tilePixelRatio={2}
+      />
+    </olLayerTile>
+  </Map>
+);
+
+<ExampleRetina />
+
+```tsx
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+
+export const ExampleRetina = () => (
+  <Map>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={4}>
+      <olSourceXYZ
+        url="https://tile.osmand.net/hd/{z}/{x}/{y}.png"
+        crossOrigin={null}
+        maxZoom={19}
+        tilePixelRatio={2}
+      />
+    </olLayerTile>
+  </Map>
+);
+```

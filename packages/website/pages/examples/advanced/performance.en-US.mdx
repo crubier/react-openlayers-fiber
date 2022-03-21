@@ -1,0 +1,119 @@
+# Performance
+
+This example demonstrates updating 1000 points on the map at up to 60FPS, every time the map is rendered
+
+import React, { useRef, useCallback } from "react";
+import "ol/ol.css";
+import { Fill, Stroke, RegularShape, Style } from "ol/style";
+import { Map as OlMap } from "ol";
+import { getVectorContext } from "ol/render";
+import { Point } from "ol/geom";
+import RenderEvent from "ol/render/Event";
+import { Map } from "@react-ol/fiber";
+
+export const stroke = new Stroke({ color: "black", width: 2 });
+export const fill = new Fill({ color: "red" });
+export const point = new Point([0, 0]);
+export const styles = [];
+
+export const ExamplePerformance = () => {
+  const mapRef = useRef(null);
+  const onPostrender = useCallback(
+    (event) => {
+      const vectorContext = getVectorContext(event);
+      for (let i = 0; i < 1000; i++) {
+        const coordinates = [
+          1000000 * Math.random(), // + i * 10000,
+          6000000 + 1000000 * Math.random(), // + i * 10000
+        ];
+        const radius = Math.floor(Math.random() * 20);
+        if (!styles[radius]) {
+          styles[radius] = new Style({
+            image: new RegularShape({
+              fill,
+              stroke,
+              radius,
+              points: 4,
+              angle: Math.PI / 4,
+            }),
+          });
+        }
+        const style = styles[radius];
+        point.setCoordinates(coordinates);
+        vectorContext.setStyle(style);
+        vectorContext.drawGeometry(point);
+      }
+      mapRef.current?.render();
+      return true;
+    },
+    [mapRef]
+  );
+  return (
+    <Map ref={mapRef} className="rounded-xl overflow-hidden mt-4">
+      <olView initialCenter={[0, 6000000]} initialZoom={2} />
+      <olLayerTile onPostrender={onPostrender}>
+        <olSourceOSM crossOrigin={null} />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+<ExamplePerformance />
+
+```tsx
+import React, { useRef, useCallback } from "react";
+import "ol/ol.css";
+import { Fill, Stroke, RegularShape, Style } from "ol/style";
+import { Map as OlMap } from "ol";
+import { getVectorContext } from "ol/render";
+import { Point } from "ol/geom";
+import RenderEvent from "ol/render/Event";
+import { Map } from "@react-ol/fiber";
+
+export const stroke = new Stroke({ color: "black", width: 2 });
+export const fill = new Fill({ color: "red" });
+export const point = new Point([0, 0]);
+export const styles = [];
+
+export const ExamplePerformance = () => {
+  const mapRef = useRef(null);
+  const onPostrender = useCallback(
+    (event) => {
+      const vectorContext = getVectorContext(event);
+      for (let i = 0; i < 1000; i++) {
+        const coordinates = [
+          1000000 * Math.random(), // + i * 10000,
+          6000000 + 1000000 * Math.random(), // + i * 10000
+        ];
+        const radius = Math.floor(Math.random() * 20);
+        if (!styles[radius]) {
+          styles[radius] = new Style({
+            image: new RegularShape({
+              fill,
+              stroke,
+              radius,
+              points: 4,
+              angle: Math.PI / 4,
+            }),
+          });
+        }
+        const style = styles[radius];
+        point.setCoordinates(coordinates);
+        vectorContext.setStyle(style);
+        vectorContext.drawGeometry(point);
+      }
+      mapRef.current?.render();
+      return true;
+    },
+    [mapRef]
+  );
+  return (
+    <Map ref={mapRef}>
+      <olView initialCenter={[0, 6000000]} initialZoom={2} />
+      <olLayerTile onPostrender={onPostrender}>
+        <olSourceOSM crossOrigin={null} />
+      </olLayerTile>
+    </Map>
+  );
+};
+```

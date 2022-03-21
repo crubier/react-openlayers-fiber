@@ -18,8 +18,6 @@ export const ExampleBingMaps = () => {
   const [currentStyle, setCurrentStyle] = useState(styles[0]);
   return (
     <>
-      {/* This example does not work with onBlur */}
-      {/* eslint-disable-next-line jsx-a11y/no-onchange */}
       <select
         value={currentStyle}
         className="mt-4 block w-full pl-3 pr-10 py-2 text-base dark:text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"

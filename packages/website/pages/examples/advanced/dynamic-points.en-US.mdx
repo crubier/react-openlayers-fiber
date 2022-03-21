@@ -1,17 +1,26 @@
-# Dynamic styles
+# Dynamic points
 
-In this example we declaratively update points at 30FPS with a custom style.
+In this example we declaratively update points at 30FPS.
 
 import React, { useState } from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
-import { Fill, Stroke } from "ol/style";
+import { Fill, Stroke, Style, RegularShape } from "ol/style";
 
 export const stroke = new Stroke({ color: "black", width: 2 });
 export const fill = new Fill({ color: "red" });
+export const pointStyle = new Style({
+  image: new RegularShape({
+    fill,
+    stroke,
+    points: 4,
+    radius: 10,
+    angle: Math.PI / 4,
+  }),
+});
 
-export const ExampleDynamicStyle = () => {
+export const ExampleDynamicPoints = () => {
   const [location, setLocation] = useState([0, 6000000]);
   useInterval(() => {
     setLocation([100000 * Math.random(), 6000000 + 100000 * Math.random()]);
@@ -24,19 +33,7 @@ export const ExampleDynamicStyle = () => {
       </olLayerTile>
       <olLayerVector>
         <olSourceVector>
-          <olFeature>
-            <olStyleStyle attach="style">
-              <olStyleRegularShape
-                attach="image"
-                args={{
-                  fill,
-                  stroke,
-                  radius: Math.random() * 20,
-                  points: 4,
-                  angle: Math.PI / 4,
-                }}
-              />
-            </olStyleStyle>
+          <olFeature style={pointStyle}>
             <olGeomPoint coordinates={location} />
           </olFeature>
         </olSourceVector>
@@ -45,19 +42,28 @@ export const ExampleDynamicStyle = () => {
   );
 };
 
-<ExampleDynamicStyle />
+<ExampleDynamicPoints />
 
 ```tsx
 import React, { useState } from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useInterval } from "react-use";
-import { Fill, Stroke } from "ol/style";
+import { Fill, Stroke, Style, RegularShape } from "ol/style";
 
 export const stroke = new Stroke({ color: "black", width: 2 });
 export const fill = new Fill({ color: "red" });
+export const pointStyle = new Style({
+  image: new RegularShape({
+    fill,
+    stroke,
+    points: 4,
+    radius: 10,
+    angle: Math.PI / 4,
+  }),
+});
 
-export const ExampleDynamicStyle = () => {
+export const ExampleDynamicPoints = () => {
   const [location, setLocation] = useState([0, 6000000]);
   useInterval(() => {
     setLocation([100000 * Math.random(), 6000000 + 100000 * Math.random()]);
@@ -70,19 +76,7 @@ export const ExampleDynamicStyle = () => {
       </olLayerTile>
       <olLayerVector>
         <olSourceVector>
-          <olFeature>
-            <olStyleStyle attach="style">
-              <olStyleRegularShape
-                attach="image"
-                args={{
-                  fill,
-                  stroke,
-                  radius: Math.random() * 20,
-                  points: 4,
-                  angle: Math.PI / 4,
-                }}
-              />
-            </olStyleStyle>
+          <olFeature style={pointStyle}>
             <olGeomPoint coordinates={location} />
           </olFeature>
         </olSourceVector>

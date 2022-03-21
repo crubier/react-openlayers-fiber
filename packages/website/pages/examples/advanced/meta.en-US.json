@@ -1,4 +1,8 @@
 {
   "declaratively-move-view": "Declaratively move view",
-  "dynamic-styles": "Dynamic styles"
+  "dynamic-styles": "Dynamic styles",
+  "dynamic-points": "Dynamic points",
+  "retina": "Retina",
+  "performance": "Performance",
+  "kitchen-sink": "Kitchen Sink"
 }
