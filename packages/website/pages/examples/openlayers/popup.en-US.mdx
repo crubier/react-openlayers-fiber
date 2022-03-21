@@ -2,7 +2,7 @@
 
 See https://openlayers.org/en/latest/examples/popup.html
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "ol/ol.css";
 import { toLonLat } from "ol/proj";
 import { toStringHDMS } from "ol/coordinate";
@@ -11,10 +11,10 @@ import { Map } from "@react-ol/fiber";
 export const ExamplePopup = () => {
   const [coordinates, setCoordinates] = useState(undefined);
   const [popup, setPopup] = useState();
-  const onSingleclick = (evt) => {
+  const onSingleclick = useCallback((evt) => {
     const { coordinate } = evt;
     setCoordinates(coordinate);
-  };
+  }, []);
   return (
     <div>
       <div
@@ -82,7 +82,7 @@ export const ExamplePopup = () => {
 <ExamplePopup />
 
 ```tsx
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "ol/ol.css";
 import { toLonLat } from "ol/proj";
 import { toStringHDMS } from "ol/coordinate";
@@ -91,10 +91,10 @@ import { Map } from "@react-ol/fiber";
 export const ExamplePopup = () => {
   const [coordinates, setCoordinates] = useState(undefined);
   const [popup, setPopup] = useState();
-  const onSingleclick = (evt) => {
+  const onSingleclick = useCallback((evt) => {
     const { coordinate } = evt;
     setCoordinates(coordinate);
-  };
+  }, []);
   return (
     <div>
       <div

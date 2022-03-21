@@ -2,7 +2,7 @@
 
 See https://openlayers.org/en/latest/examples/icon.html
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import OverlayPositioning from "ol/OverlayPositioning";
 import IconAnchorUnits from "ol/style/IconAnchorUnits";
 import { Point } from "ol/geom";
@@ -13,22 +13,28 @@ export const ExampleIcon = () => {
   const [coordinates, setCoordinates] = useState(undefined);
   const [map, setMap] = useState(null);
   const [popup, setPopup] = useState(null);
-  const onClick = (evt) => {
-    if (!map) return;
-    const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
-    if (feature) {
-      const coordinate = feature.getGeometry().getCoordinates();
-      setCoordinates(coordinate);
-    } else {
-      setCoordinates(undefined);
-    }
-  };
-  const onPointermove = (e) => {
-    if (!map) return;
-    const pixel = map.getEventPixel(e.originalEvent);
-    const hit = map.hasFeatureAtPixel(pixel);
-    map.getTarget().style.cursor = hit ? "pointer" : "";
-  };
+  const onClick = useCallback(
+    (evt) => {
+      if (!map) return;
+      const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+      if (feature) {
+        const coordinate = feature.getGeometry().getCoordinates();
+        setCoordinates(coordinate);
+      } else {
+        setCoordinates(undefined);
+      }
+    },
+    [map]
+  );
+  const onPointermove = useCallback(
+    (e) => {
+      if (!map) return;
+      const pixel = map.getEventPixel(e.originalEvent);
+      const hit = map.hasFeatureAtPixel(pixel);
+      map.getTarget().style.cursor = hit ? "pointer" : "";
+    },
+    [map]
+  );
   return (
     <div>
       <div ref={setPopup}>
@@ -88,7 +94,7 @@ export const ExampleIcon = () => {
 <ExampleIcon />
 
 ```tsx
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import OverlayPositioning from "ol/OverlayPositioning";
 import IconAnchorUnits from "ol/style/IconAnchorUnits";
 import { Point } from "ol/geom";
@@ -99,22 +105,28 @@ export const ExampleIcon = () => {
   const [coordinates, setCoordinates] = useState(undefined);
   const [map, setMap] = useState(null);
   const [popup, setPopup] = useState(null);
-  const onClick = (evt) => {
-    if (!map) return;
-    const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
-    if (feature) {
-      const coordinate = feature.getGeometry().getCoordinates();
-      setCoordinates(coordinate);
-    } else {
-      setCoordinates(undefined);
-    }
-  };
-  const onPointermove = (e) => {
-    if (!map) return;
-    const pixel = map.getEventPixel(e.originalEvent);
-    const hit = map.hasFeatureAtPixel(pixel);
-    map.getTarget().style.cursor = hit ? "pointer" : "";
-  };
+  const onClick = useCallback(
+    (evt) => {
+      if (!map) return;
+      const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+      if (feature) {
+        const coordinate = feature.getGeometry().getCoordinates();
+        setCoordinates(coordinate);
+      } else {
+        setCoordinates(undefined);
+      }
+    },
+    [map]
+  );
+  const onPointermove = useCallback(
+    (e) => {
+      if (!map) return;
+      const pixel = map.getEventPixel(e.originalEvent);
+      const hit = map.hasFeatureAtPixel(pixel);
+      map.getTarget().style.cursor = hit ? "pointer" : "";
+    },
+    [map]
+  );
   return (
     <div>
       <div ref={setPopup}>
