@@ -1,10 +1,11 @@
 # Kitchen Sink
 
-This is a kitchen sink example showing several features combined. You can:
+This is a kitchen sink example showing several features combined. Features showed here:
 
-- Draw polygons
 - Change base map
 - View the coordinates of the view center as you pan
+- Draw polygons
+- Block drawing polygons when the base map is the second element of the list
 
 import React, { useEffect, useState } from "react";
 import { Fill, RegularShape, Stroke, Style } from "ol/style";
@@ -52,7 +53,7 @@ export const ExampleKitchenSink = () => {
   const [drawInteraction, setDrawInteraction] = useState();
   useEffect(() => {
     if (drawInteraction) {
-      if (currentStyle === bingstyles[0]) {
+      if (currentStyle === bingstyles[1]) {
         drawInteraction.setActive(false);
       } else {
         drawInteraction.setActive(true);
@@ -180,7 +181,7 @@ export const ExampleKitchenSink = () => {
   const [drawInteraction, setDrawInteraction] = useState();
   useEffect(() => {
     if (drawInteraction) {
-      if (currentStyle === bingstyles[0]) {
+      if (currentStyle === bingstyles[1]) {
         drawInteraction.setActive(false);
       } else {
         drawInteraction.setActive(true);
