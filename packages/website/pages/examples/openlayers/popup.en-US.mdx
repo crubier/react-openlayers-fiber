@@ -16,7 +16,7 @@ export const ExamplePopup = () => {
     setCoordinates(coordinate);
   }, []);
   return (
-    <div>
+    <>
       <div
         ref={setPopup}
         style={{
@@ -75,7 +75,7 @@ export const ExamplePopup = () => {
           />
         </olLayerTile>
       </Map>
-    </div>
+    </>
   );
 };
 
@@ -96,7 +96,7 @@ export const ExamplePopup = () => {
     setCoordinates(coordinate);
   }, []);
   return (
-    <div>
+    <>
       <div
         ref={setPopup}
         style={{
@@ -149,10 +149,11 @@ export const ExamplePopup = () => {
             }
             url="https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             tileSize={512}
+            crossOrigin={null}
           />
         </olLayerTile>
       </Map>
-    </div>
+    </>
   );
 };
 ```

@@ -9,7 +9,7 @@ import { Map } from "@react-ol/fiber";
 export const ExampleAccessible = () => {
   const viewRef = useRef();
   return (
-    <div>
+    <>
       <button
         className="inline-flex items-center mt-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
         onClick={() => {
@@ -32,7 +32,7 @@ export const ExampleAccessible = () => {
           <olSourceOSM />
         </olLayerTile>
       </Map>
-    </div>
+    </>
   );
 };
 
@@ -46,7 +46,7 @@ import { Map } from "@react-ol/fiber";
 export const ExampleAccessible = () => {
   const viewRef = useRef();
   return (
-    <div>
+    <>
       <button
         onClick={() => {
           viewRef.current?.setZoom(viewRef.current.getZoom() - 1);
@@ -67,7 +67,7 @@ export const ExampleAccessible = () => {
           <olSourceOSM />
         </olLayerTile>
       </Map>
-    </div>
+    </>
   );
 };
 ```

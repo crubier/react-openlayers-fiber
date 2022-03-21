@@ -33,7 +33,7 @@ export const ExampleCluster = () => {
   const [distance, setDistance] = useState(40);
   const [minDistance, setMinDistance] = useState(20);
   return (
-    <div>
+    <>
       <form>
         <label htmlFor="distance">Cluster distance</label>
         <input
@@ -95,7 +95,7 @@ export const ExampleCluster = () => {
           </olSourceCluster>
         </olLayerVector>
       </Map>
-    </div>
+    </>
   );
 };
 
@@ -133,7 +133,7 @@ export const ExampleCluster = () => {
   const [distance, setDistance] = useState(40);
   const [minDistance, setMinDistance] = useState(20);
   return (
-    <div>
+    <>
       <form>
         <label htmlFor="distance">Cluster distance</label>
         <input
@@ -195,7 +195,7 @@ export const ExampleCluster = () => {
           </olSourceCluster>
         </olLayerVector>
       </Map>
-    </div>
+    </>
   );
 };
 ```
