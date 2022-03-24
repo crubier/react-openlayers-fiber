@@ -6,11 +6,24 @@
   "license": "MIT",
   "type": "module",
   "author": "Vincent Lecrubier <vincent.lecrubier@gmail.com>",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/ts/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/ts/index.d.ts"
+    },
+    "./src": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
   "scripts": {
     "type-check": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "build": "swc ./src --out-dir ./dist/esm --config-file ./esm.swcrc && swc ./src --out-dir ./dist/cjs --config-file ./cjs.swcrc && tsc -d --declarationDir dist/ts --declarationMap --emitDeclarationOnly"
   },
   "dependencies": {
     "lodash": "4.17.21",
@@ -23,6 +36,8 @@
     "react-dom": "*"
   },
   "devDependencies": {
+    "@swc/cli": "0.1.56",
+    "@swc/core": "1.2.159",
     "@turf/turf": "6.3.0",
     "@types/jest": "24.0.13",
     "@types/lodash": "4.14.154",
@@ -36,6 +51,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-use": "15.3.4",
+    "tsc": "2.0.4",
     "typescript": "4.3.5"
   }
 }

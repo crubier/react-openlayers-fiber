@@ -24,6 +24,7 @@ import * as olSourceRaw from "ol/source";
 import * as olGeomRaw from "ol/geom";
 import * as olStyleRaw from "ol/style";
 
+
 // /////////////////////////////////////////////////////////////////////////////
 // Here we define what we omit: abstract base classes, utility classes and other weird stuff
 
@@ -51,7 +52,7 @@ const olOmitKeys = [
 const olLayerOmitKeys = [] as const;
 const olControlOmitKeys = ["defaults"] as const;
 const olInteractionOmitKeys = ["defaults"] as const;
-const olSourceOmitKeys = ["Image", "Source", "Tile"] as const;
+const olSourceOmitKeys = ["Image", "Source", "Tile", "sourcesFromTileGrid"] as const;
 const olGeomOmitKeys = ["Geometry", "SimpleGeometry"] as const;
 const olStyleOmitKeys = ["Image", "IconImage"] as const;
 
@@ -165,6 +166,7 @@ export type Catalogue = CatalogueOl &
   CatalogueOlSource &
   CatalogueOlGeom &
   CatalogueOlStyle;
+
 
 export type CatalogueKey = keyof Catalogue;
 export type CatalogueItem = Catalogue[CatalogueKey];

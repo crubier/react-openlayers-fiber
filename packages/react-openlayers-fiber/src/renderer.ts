@@ -992,7 +992,7 @@ const reconciler = ReactReconciler<
   // // -------------------
 });
 
-export function render(what: React.ReactNode, where: HTMLElement) {
+export function render(what: React.ReactNode, where: HTMLElement):PublicInstance<CatalogueItem, CatalogueItem> | React.Component<any, any, any> | null {
   let container;
   if (instances.has(where)) {
     container = instances.get(where);
