@@ -1,0 +1,37 @@
+# Hooks
+
+## The `useMap` hook
+
+The `useMap` hook allows to access the `Map` instance. Remember that this can work only inside a component that is child of a `<Map />` component.
+
+```tsx
+import React from "react";
+import { Map, useMap } from "@react-ol/fiber";
+import "ol/ol.css";
+
+export const Inner = () => {
+  const map = useMap();
+  function centerOnFeatures(extent) {
+    const view = map.getView();
+    view.fit(extent);
+  }
+  return (
+    <olLayerVector>
+      <olSourceVector onChange={(e) => centerOnFeatures(e.target.getExtent())}>
+        <olFeature>
+          <olGeomCircle args={[[0, 0], 30000]} />
+        </olFeature>
+      </olSourceVector>
+    </olLayerVector>
+  );
+};
+
+export const Parent = () => {
+  // WARNING: you can't use useOL() here
+  return (
+    <Map>
+      <Inner />
+    </Map>
+  );
+};
+```

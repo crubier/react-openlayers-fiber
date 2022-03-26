@@ -2,5 +2,6 @@
   "getting-started": "Getting Started",
   "components": "Components",
   "props": "Props",
+  "hooks": "Hooks",
   "imperative-fallback": "Imperative Fallback"
 }

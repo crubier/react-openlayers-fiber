@@ -1,25 +1,6 @@
 # Components
 
-## The `Map` component
-
-The `<Map>` component is the main component, it allows to transition from `react-dom` to the `@react-ol/fiber` rendering realm.
-
-The `<Map/>` component takes props for `<div/>` element that wraps the map, **and** for the `<olMap/>` component that is the actual OpenLayers `ol.Map` object.
-
-```tsx
-import { Map } from "@react-ol/fiber";
-
-export const Example = () => (
-  <Map style={{ width: "100%", height: "640px" }}>
-    <olView initialCenter={[0, 0]} initialZoom={2} />
-    <olLayerTile preload={Infinity}>
-      <olSourceOSM />
-    </olLayerTile>
-  </Map>
-);
-```
-
-## OpenLayers components
+## OpenLayers-derived components
 
 All OpenLayers classes are available as React Component through the automatic API.
 
@@ -38,6 +19,25 @@ import { Map } from "@react-ol/fiber";
 
 export const Example = () => (
   <Map>
+    <olView initialCenter={[0, 0]} initialZoom={2} />
+    <olLayerTile preload={Infinity}>
+      <olSourceOSM />
+    </olLayerTile>
+  </Map>
+);
+```
+
+## The `Map` component
+
+The `<Map>` component is the main component, it allows to transition from `react-dom` to the `@react-ol/fiber` rendering realm.
+
+The `<Map/>` component takes props for `<div/>` element that wraps the map, **and** for the `<olMap/>` component that is the actual OpenLayers `ol.Map` object.
+
+```tsx
+import { Map } from "@react-ol/fiber";
+
+export const Example = () => (
+  <Map style={{ width: "100%", height: "640px" }}>
     <olView initialCenter={[0, 0]} initialZoom={2} />
     <olLayerTile preload={Infinity}>
       <olSourceOSM />

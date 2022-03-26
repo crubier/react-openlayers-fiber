@@ -116,3 +116,20 @@ export const AccessibleMap = () => {
   );
 };
 ```
+
+## Events props
+
+All events described in the OpenLayers documentation are capitalized and prefixed with "on". The list of event supported for typing can be found in [events.ts](https://github.com/crubier/react-openlayers-fiber/blob/master/packages/react-openlayers-fiber/src/events.ts) but other event types might be supported.
+
+```tsx
+export const Component = () => {
+  // This will set the 'select' event
+  return <olInteractionSelect onSelect={(e) => console.log(e)} />;
+
+  // This will set the 'change' event
+  return <olSourceVector onChange={(e) => console.log(e)} />;
+
+  // It also works on the map component!
+  return <Map onPointermove={(e) => console.log(e.coordinate)} />;
+};
+```
