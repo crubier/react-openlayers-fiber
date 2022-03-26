@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@react-ol/root",
   "version": "1.0.0",
   "repository": "git@github.com:crubier/crubier/react-openlayers-fiber.git",
