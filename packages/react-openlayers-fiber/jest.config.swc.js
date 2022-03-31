@@ -24,7 +24,8 @@ const jestConfig = async () => {
     ...nextJestConfig,
     transformIgnorePatterns: [
       '^.+\\.module\\.(css|sass|scss)$',
-      '<rootDir>/node_modules/(?!(ol/|labelgun/|@mapbox/mapbox-gl-style-spec/|mapbox-to-ol-style/|ol-mapbox-style/|geotiff/|fetch-blob/))'
+      // '<rootDir>/node_modules/(?!(ol/|labelgun/|@mapbox/mapbox-gl-style-spec/|mapbox-to-ol-style/|ol-mapbox-style/|geotiff/|fetch-blob/))'
+      '/node_modules/(?!(ol/))'
     ]
   };
   return veryCustomJestConfig;
