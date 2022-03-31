@@ -92,6 +92,7 @@ export declare namespace ReactOlFiber {
               container: Container,
               child: Child
             ) => (container: Container, child: Child) => void);
+        attachArray?:string;
         onUpdate?: (...args: any[]) => void;
         children?: React.ReactNode | React.ReactNodeArray;
         ref?: React.Ref<React.ReactNode>;
@@ -117,6 +118,7 @@ export declare namespace ReactOlFiber {
             container: Container,
             child: Child
           ) => (container: Container, child: Child) => void);
+      attachArray?:string;
       onUpdate?: (...args: any[]) => void;
       children?: React.ReactNode | React.ReactNodeArray;
       ref?: React.Ref<React.ReactNode>;
@@ -137,8 +139,8 @@ export declare namespace ReactOlFiber {
    */
   type IntrinsicElementsAdHoc = {
     // Primitive
-    primitive: { object: any } & { [properties: string]: any };
-    new: { object: any; args: any[] } & { [properties: string]: any };
+    olPrimitive: { object: any } & { [properties: string]: any };
+    olNew: { object: any; args: any[] } & { [properties: string]: any };
   };
 
   type IntrinsicElements = ReactOlFiber.IntrinsicElementsAdHoc &

@@ -125,7 +125,7 @@ const noOp = () => {};
 
 const error002 = (containerType = "", childType = "") =>
   new Error(
-    `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props. If you think this should be done automatically, open an issue here https://github.com/labelflow/react-openlayers-fiber/issues/new?title=Support+${childType}+in+${containerType}&body=Support+${childType}+in+${containerType}`
+    `React-Openlayers-Fiber Error: Couldn't add this child to this container. You can specify how to attach this type of child ("${childType}") to this type of container ("${containerType}") using the "attach" props. If you think this should be done automatically, open an issue here https://github.com/crubier/react-openlayers-fiber/issues/new?title=Support+${childType}+in+${containerType}&body=Support+${childType}+in+${containerType}`
   );
 
 const error001 = () =>
@@ -373,7 +373,7 @@ const prepareForCommit = (
 const resetAfterCommit = (_containerInfo: Container): void => {};
 
 const createInstance = <SelfItem extends CatalogueItem>(
-  type: SelfItem["type"] | "primitive" | "new",
+  type: SelfItem["type"] | "olPrimitive" | "olNew",
   props: Props,
   _rootContainerInstance: Container | null,
   _hostContext: HostContext | null,
@@ -382,15 +382,15 @@ const createInstance = <SelfItem extends CatalogueItem>(
   let olObject;
   let kind;
 
-  if (type === "primitive") {
-    // <primitive/> Elements like in react three fiber
-    const { object } = props as ReactOlFiber.IntrinsicElements["primitive"];
+  if (type === "olPrimitive") {
+    // <olPrimitive/> Elements like in react three fiber
+    const { object } = props as ReactOlFiber.IntrinsicElements["olPrimitive"];
     olObject = object;
     kind = null;
-  } else if (type === "new") {
+  } else if (type === "olNew") {
     // <new/> Elements like in react three fiber
     const { object: TheObjectClass, args } =
-      props as ReactOlFiber.IntrinsicElements["new"];
+      props as ReactOlFiber.IntrinsicElements["olNew"];
     olObject = new TheObjectClass(...args);
     kind = null;
   } else {
@@ -649,7 +649,7 @@ function switchInstance<
   ParentItem extends CatalogueItem
 >(
   instance: Instance<SelfItem, ParentItem>,
-  type: SelfItem["type"] | "primitive" | "new",
+  type: SelfItem["type"] | "olPrimitive" | "olNew",
   newProps: any,
   fiber: ReactReconciler.Fiber
 ) {

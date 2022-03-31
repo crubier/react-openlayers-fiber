@@ -45,3 +45,39 @@ export const Example = () => (
   </Map>
 );
 ```
+
+## The `olPrimitive` component
+
+If you want to use your own already instanced objects, you can use the `<olPrimitive/>` wrapper and set a custom attach:
+
+```tsx
+import React from "react";
+import "ol/ol.css";
+import { Map } from "@react-ol/fiber";
+import { OSM } from "ol/source";
+
+export const Example1 = () => {
+  return (
+    <Map style={{ width: "100%", height: "640px" }}>
+      <olView initialCenter={[0, 0]} initialZoom={2} />
+      <olLayerTile preload={Infinity}>
+        <olSourceOSM />
+      </olLayerTile>
+    </Map>
+  );
+};
+
+export const source = new OSM();
+export const Example2 = () => {
+  return (
+    <Map style={{ width: "100%", height: "640px" }}>
+      <olView initialCenter={[0, 0]} initialZoom={2} />
+      <olLayerTile preload={Infinity} attach={"layers"}>
+        <olPrimitive object={source} attach={"source"} />
+      </olLayerTile>
+    </Map>
+  );
+};
+```
+
+Here, Example1 and Example2 work the same way.

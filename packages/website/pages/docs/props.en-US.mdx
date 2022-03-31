@@ -133,3 +133,7 @@ export const Component = () => {
   return <Map onPointermove={(e) => console.log(e.coordinate)} />;
 };
 ```
+
+## `onUpdate` prop
+
+An additional event props, `onUpdate`, is added by `@react-ol/fiber` to all components, and is called every time an openlayers object is updated when rendering.
