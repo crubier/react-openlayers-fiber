@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
-    "react-reconciler": "0.25.1",
-    "scheduler": "0.20.1"
+    "react-reconciler": "0.27.0",
+    "scheduler": "0.21.0"
   },
   "peerDependencies": {
     "ol": "*",
@@ -43,10 +43,11 @@
     "@babel/preset-typescript": "7.16.7",
     "@swc/cli": "0.1.56",
     "@swc/core": "1.2.159",
+    "@testing-library/dom": "8.12.0",
     "@testing-library/jest-dom": "5.16.3",
     "@testing-library/react": "12.1.4",
     "@testing-library/user-event": "14.0.2",
-    "@types/jest": "24.0.13",
+    "@types/jest": "27.4.1",
     "@types/lodash": "4.14.154",
     "@types/proj4": "2.5.0",
     "@types/react": "17.0.0",
@@ -57,8 +58,8 @@
     "jest": "27.5.1",
     "next": "12.1.1",
     "ol": "6.13.0",
-    "react": "latest",
-    "react-dom": "latest",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
     "ts-jest": "27.1.4",
     "tsc": "2.0.4",
     "typescript": "4.3.5",
